@@ -11,21 +11,25 @@
 
 <style>
 /* =========================================================
-   IRA — GLOBAL
+   IRA — DESIGN TOKENS
    ========================================================= */
 *, *::before, *::after { box-sizing: border-box; }
 
 :root{
-  --ira-bg:     #f7f4ef;
-  --ira-bg-alt: #ffffff;
-  --ira-ink:    #101c2c;
-  --green:      #2c7a3e;
-  --night:      #0f1e3d;
-  --ira-green:  #0a2e0a;
-  --ira-muted:  #5b6472;
-  --ira-line:   #e6e1d8;
-  --ira-radius: 6px;
-  --ira-max:    1200px;
+  --ira-bg:      #f7f4ef;
+  --ira-bg-alt:  #ffffff;
+  --ira-ink:     #101c2c;
+  --green:       #2c7a3e;
+  --green-soft:  #4ea862;
+  --green-deep:  #17421f;
+  --night:       #0f1e3d;
+  --ira-muted:   #5b6472;
+  --ira-line:    #e6e1d8;
+  --ira-radius:  8px;
+  --ira-max:     1200px;
+
+  --ease:        cubic-bezier(.22, 1, .36, 1);
+  --ease-soft:   cubic-bezier(.4, 0, .2, 1);
 }
 
 html { scroll-behavior: smooth; }
@@ -39,6 +43,7 @@ body{
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
 }
 
 img { max-width: 100%; display: block; }
@@ -49,17 +54,90 @@ a   { color: inherit; text-decoration: none; }
   margin-inline: auto;
 }
 
-/* ---------- ancrages (compensation header fixe) ---------- */
+/* ---------- ancrages ---------- */
 #recherche,
 #evaluation,
 #conseil-data,
 #formation,
-#data-collecte{
-  scroll-margin-top: 100px;
+#data-collecte { scroll-margin-top: 100px; }
+
+/* =========================================================
+   BARRE DE PROGRESSION
+   ========================================================= */
+.ira-progress{
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  z-index: 120;
+  pointer-events: none;
+  background: transparent;
+}
+.ira-progress span{
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(90deg, var(--green), var(--green-soft));
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform;
 }
 
-/* ---------- boutons ---------- */
+/* =========================================================
+   RAIL DE NAVIGATION LATÉRAL
+   ========================================================= */
+.ira-rail{
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 60;
+}
+@media (min-width: 1240px){ .ira-rail{ display: flex; } }
+
+.ira-rail a{
+  position: relative;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--ira-line);
+  border: 1px solid rgba(15,30,61,.10);
+  transition: background .35s var(--ease), transform .35s var(--ease), border-color .35s var(--ease);
+}
+.ira-rail a::after{
+  content: attr(data-label);
+  position: absolute;
+  right: 22px;
+  top: 50%;
+  transform: translateY(-50%) translateX(8px);
+  white-space: nowrap;
+  font-size: .68rem;
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--night);
+  background: var(--ira-bg-alt);
+  padding: .42rem .75rem;
+  border-radius: 4px;
+  box-shadow: 0 10px 28px -14px rgba(15,30,61,.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s var(--ease), transform .3s var(--ease);
+}
+.ira-rail a:hover::after{ opacity: 1; transform: translateY(-50%) translateX(0); }
+.ira-rail a:hover{ background: var(--green-soft); }
+.ira-rail a.is-active{
+  background: var(--green);
+  border-color: var(--green);
+  transform: scale(1.35);
+}
+
+/* =========================================================
+   BOUTONS
+   ========================================================= */
 .ira-btn{
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: .55em;
@@ -71,46 +149,47 @@ a   { color: inherit; text-decoration: none; }
   letter-spacing: .01em;
   border: 1.5px solid transparent;
   cursor: pointer;
-  transition: transform .2s ease, background-color .25s ease, color .25s ease, border-color .25s ease;
+  overflow: hidden;
   white-space: nowrap;
+  transition: transform .35s var(--ease), background-color .3s var(--ease),
+              color .3s var(--ease), border-color .3s var(--ease), box-shadow .35s var(--ease);
 }
-.ira-btn:hover { transform: translateY(-2px); }
+.ira-btn svg{ transition: transform .35s var(--ease); }
+.ira-btn:hover{ transform: translateY(-3px); }
+.ira-btn:hover svg{ transform: translateX(4px); }
 
 .ira-btn--primary{ background: var(--green); color: #fff; border-color: var(--green); }
-.ira-btn--primary:hover{ background: var(--night); border-color: var(--night); }
+.ira-btn--primary:hover{
+  background: var(--night); border-color: var(--night);
+  box-shadow: 0 16px 32px -18px rgba(15,30,61,.7);
+}
 
 .ira-btn--ghost{ background: transparent; color: var(--night); border-color: var(--night); }
 .ira-btn--ghost:hover{ background: var(--night); color: #fff; }
 
-.ira-btn--light{ background: transparent; color: #fff; border-color: rgba(255,255,255,.7); }
-.ira-btn--light:hover{ background: #fff; color: var(--green); }
+.ira-btn--light{ background: #fff; color: var(--green-deep); border-color: #fff; }
+.ira-btn--light:hover{
+  background: transparent; color: #fff; border-color: rgba(255,255,255,.85);
+  box-shadow: 0 18px 40px -20px rgba(0,0,0,.55);
+}
 
-/* ---------- titres ---------- */
+/* =========================================================
+   TITRES & TEXTE
+   ========================================================= */
 .ira-title{
   font-family: "Lexend", sans-serif;
-  font-size: clamp(1.8rem, 3.4vw, 2.6rem);
-  line-height: 1.15;
+  font-size: clamp(1.7rem, 3.2vw, 2.45rem);
+  line-height: 1.16;
   font-weight: 600;
   margin: 0 0 1rem;
-  letter-spacing: -.02em;
+  letter-spacing: -.025em;
   color: var(--night);
 }
 
-.ira-lead{
-  font-family: "Lexend", sans-serif;
-  font-size: 1.05rem;
-  font-weight: 300;
-  color: var(--ira-muted);
-  max-width: 62ch;
-  margin: 0;
-}
-
-/* ---------- eyebrow (hero) ---------- */
 .ira-eyebrow{
   display: inline-flex;
   align-items: center;
   gap: .7rem;
-  font-family: "Lexend", sans-serif;
   font-size: .76rem;
   font-weight: 500;
   letter-spacing: .18em;
@@ -120,105 +199,227 @@ a   { color: inherit; text-decoration: none; }
 }
 .ira-eyebrow::before{
   content: "";
-  width: 30px;
-  height: 1.5px;
+  width: 30px; height: 1.5px;
   background: var(--green);
   display: block;
-}
-
-/* ---------- trait de section ---------- */
-.ira-section-line{
-  display: block;
-  width: 44px;
-  height: 2px;
-  background: var(--green);
-  border-radius: 2px;
-  margin: 0 0 1.4rem;
+  transform-origin: left center;
 }
 
 /* =========================================================
-   EN-TÊTE DE PAGE
+   EN-TÊTE DE PAGE (HERO)
    ========================================================= */
 .ira-pagehero{
+  position: relative;
   background: var(--ira-bg-alt);
-  padding: clamp(56px, 8vw, 110px) 0 clamp(56px, 8vw, 100px);
+  padding: clamp(64px, 9vw, 128px) 0 clamp(56px, 7vw, 96px);
   border-bottom: 1px solid var(--ira-line);
+  overflow: hidden;
 }
-.ira-pagehero__inner{ max-width: 900px; }
+.ira-pagehero::after{
+  content: "";
+  position: absolute;
+  top: -30%; right: -12%;
+  width: 520px; height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(44,122,62,.10), transparent 72%);
+  pointer-events: none;
+  animation: iraFloat 14s ease-in-out infinite alternate;
+}
+@keyframes iraFloat{
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  100% { transform: translate3d(-40px, 34px, 0) scale(1.12); }
+}
+
+.ira-pagehero__inner{ max-width: 900px; position: relative; z-index: 1; }
 
 .ira-pagehero__title{
   font-family: "Lexend", sans-serif;
-  font-size: clamp(1.9rem, 4vw, 3rem);
-  line-height: 1.12;
+  font-size: clamp(2rem, 4.6vw, 3.4rem);
+  line-height: 1.08;
   font-weight: 600;
-  letter-spacing: -.025em;
+  letter-spacing: -.035em;
   color: var(--night);
-  margin: 0 0 1.6rem;
+  margin: 0 0 1.8rem;
 }
+.ira-pagehero__title .line{
+  display: block;
+  overflow: hidden;
+  padding-bottom: .1em;
+  margin-bottom: -.1em;
+}
+.ira-pagehero__title .line > span{
+  display: block;
+  transform: translateY(110%);
+  transition: transform 1.05s var(--ease);
+}
+.ira-pagehero__title em{
+  font-family: "DM Serif Display", serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--green);
+  letter-spacing: -.02em;
+}
+
 .ira-pagehero__lead{
-  font-family: "Lexend", sans-serif;
   font-size: clamp(1.02rem, 1.5vw, 1.18rem);
   font-weight: 300;
   color: var(--ira-muted);
   max-width: 68ch;
-  margin: 0 0 1.1rem;
+  margin: 0;
+  line-height: 1.72;
 }
-.ira-pagehero__lead:last-child{ margin-bottom: 0; }
 .ira-pagehero__lead strong{ font-weight: 500; color: var(--green); }
 
+/* --- entrée hero (déclenchée par .is-ready sur <body>) --- */
+.ira-pagehero .ira-eyebrow,
+.ira-pagehero__lead{
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity .9s var(--ease), transform .9s var(--ease);
+}
+body.is-ready .ira-pagehero .ira-eyebrow{
+  opacity: 1; transform: none; transition-delay: .12s;
+}
+body.is-ready .ira-pagehero__title .line > span{
+  transform: translateY(0);
+}
+body.is-ready .ira-pagehero__title .line:nth-child(1) > span{ transition-delay: .22s; }
+body.is-ready .ira-pagehero__title .line:nth-child(2) > span{ transition-delay: .34s; }
+body.is-ready .ira-pagehero__lead{
+  opacity: 1; transform: none; transition-delay: .52s;
+}
+
+/* --- indice de défilement --- */
+.ira-scrollcue{
+  margin-top: 3.2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .85rem;
+  font-size: .7rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--ira-muted);
+  opacity: 0;
+  transition: opacity .8s var(--ease) .8s;
+}
+body.is-ready .ira-scrollcue{ opacity: 1; }
+.ira-scrollcue__track{
+  position: relative;
+  width: 1px; height: 46px;
+  background: var(--ira-line);
+  overflow: hidden;
+}
+.ira-scrollcue__track::after{
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 45%;
+  background: var(--green);
+  animation: iraCue 2.1s var(--ease-soft) infinite;
+}
+@keyframes iraCue{
+  0%   { transform: translateY(-110%); }
+  55%  { transform: translateY(120%); }
+  100% { transform: translateY(120%); }
+}
+
 /* =========================================================
-   BLOC EXPERTISE
+   BLOCS EXPERTISE
    ========================================================= */
 .ira-expertise{
-  padding: clamp(60px, 9vw, 120px) 0;
+  position: relative;
+  padding: clamp(64px, 9vw, 128px) 0;
   border-top: 1px solid var(--ira-line);
 }
-.ira-expertise:nth-of-type(odd){
-  background: var(--ira-bg);
-}
-.ira-expertise:nth-of-type(even){
-  background: var(--ira-bg-alt);
-}
+.ira-expertise--alt{ background: var(--ira-bg-alt); }
 
 .ira-expertise__row{
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: clamp(2rem, 5vw, 4.5rem);
+  gap: clamp(2rem, 5vw, 5rem);
   align-items: center;
 }
 
-/* alternance : sur les blocs pairs, l'image passe à droite */
+/* alternance */
 .ira-expertise--reverse .ira-expertise__media{ order: 2; }
 .ira-expertise--reverse .ira-expertise__content{ order: 1; }
 
+/* --- média --- */
 .ira-expertise__media{
   position: relative;
   border-radius: var(--ira-radius);
   overflow: hidden;
   aspect-ratio: 4 / 3;
   background: var(--ira-line);
-  box-shadow: 0 24px 60px -32px rgba(15,30,61,.28);
+  box-shadow: 0 30px 70px -40px rgba(15,30,61,.42);
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 1.15s var(--ease);
 }
-.ira-expertise__media img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform .5s ease;
+.ira-expertise.is-inview .ira-expertise__media{
+  clip-path: inset(0 0 0 0);
 }
-.ira-expertise__media:hover img{
-  transform: scale(1.04);
-}
+.ira-expertise--reverse .ira-expertise__media{ clip-path: inset(0 0 0 100%); }
+.ira-expertise--reverse.is-inview .ira-expertise__media{ clip-path: inset(0 0 0 0); }
 
+.ira-expertise__media::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(15,30,61,.35), transparent 55%);
+  opacity: 0;
+  transition: opacity .55s var(--ease);
+  pointer-events: none;
+}
+.ira-expertise__media:hover::after{ opacity: 1; }
+
+.ira-expertise__media img{
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transform: scale(1.16);
+  transition: transform 1.7s var(--ease);
+}
+.ira-expertise.is-inview .ira-expertise__media img{ transform: scale(1.02); }
+.ira-expertise.is-inview .ira-expertise__media:hover img{ transform: scale(1.07); }
+
+/* --- contenu --- */
 .ira-expertise__content{ max-width: 560px; }
 
+.ira-expertise__marker{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .7s var(--ease), transform .7s var(--ease);
+}
+.ira-expertise__num{
+  font-size: .76rem;
+  font-weight: 600;
+  letter-spacing: .24em;
+  color: var(--green);
+  font-variant-numeric: tabular-nums;
+}
+.ira-expertise__rule{
+  flex: 1;
+  max-width: 130px;
+  height: 1px;
+  background: var(--ira-line);
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform .9s var(--ease) .18s;
+}
+
 .ira-expertise__desc{
-  font-family: "Lexend", sans-serif;
   font-size: 1rem;
   font-weight: 300;
-  line-height: 1.7;
+  line-height: 1.75;
   color: var(--ira-ink);
-  margin: 0 0 1.8rem;
+  margin: 0 0 1.9rem;
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .75s var(--ease), transform .75s var(--ease);
 }
 
 .ira-expertise__list{
@@ -228,56 +429,121 @@ a   { color: inherit; text-decoration: none; }
 }
 .ira-expertise__list li{
   position: relative;
-  padding: .55rem 0 .55rem 1.6rem;
-  font-family: "Lexend", sans-serif;
-  font-size: .96rem;
+  padding: .62rem 0 .62rem 1.65rem;
+  font-size: .955rem;
   font-weight: 300;
-  line-height: 1.6;
+  line-height: 1.62;
   color: var(--ira-muted);
   border-bottom: 1px solid var(--ira-line);
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .7s var(--ease), transform .7s var(--ease), color .3s var(--ease);
 }
 .ira-expertise__list li:last-child{ border-bottom: 0; }
+.ira-expertise__list li:hover{ color: var(--ira-ink); }
 .ira-expertise__list li::before{
   content: "";
   position: absolute;
   left: 0;
-  top: 1.05rem;
-  width: 8px;
-  height: 8px;
+  top: 1.1rem;
+  width: 8px; height: 8px;
   border-radius: 50%;
   background: var(--green);
+  transform: scale(0);
+  transition: transform .55s var(--ease);
 }
+
+/* --- états visibles (stagger) --- */
+.ira-expertise__marker,
+.ira-expertise__desc,
+.ira-title{ will-change: opacity, transform; }
+
+.ira-expertise__marker{ transition-delay: .05s; }
+.ira-expertise .ira-title{
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .75s var(--ease) .12s, transform .75s var(--ease) .12s;
+}
+
+.ira-expertise.is-inview .ira-expertise__marker{ opacity: 1; transform: none; }
+.ira-expertise.is-inview .ira-expertise__rule{ transform: scaleX(1); }
+.ira-expertise.is-inview .ira-title{ opacity: 1; transform: none; }
+.ira-expertise.is-inview .ira-expertise__desc{
+  opacity: 1; transform: none; transition-delay: .22s;
+}
+.ira-expertise.is-inview .ira-expertise__list li{
+  opacity: 1; transform: none;
+}
+.ira-expertise.is-inview .ira-expertise__list li::before{ transform: scale(1); }
+.ira-expertise.is-inview .ira-expertise__list li:nth-child(1){ transition-delay: .32s; }
+.ira-expertise.is-inview .ira-expertise__list li:nth-child(2){ transition-delay: .40s; }
+.ira-expertise.is-inview .ira-expertise__list li:nth-child(3){ transition-delay: .48s; }
+.ira-expertise.is-inview .ira-expertise__list li:nth-child(4){ transition-delay: .56s; }
+.ira-expertise.is-inview .ira-expertise__list li:nth-child(1)::before{ transition-delay: .34s; }
+.ira-expertise.is-inview .ira-expertise__list li:nth-child(2)::before{ transition-delay: .42s; }
+.ira-expertise.is-inview .ira-expertise__list li:nth-child(3)::before{ transition-delay: .50s; }
+.ira-expertise.is-inview .ira-expertise__list li:nth-child(4)::before{ transition-delay: .58s; }
 
 /* =========================================================
    APPEL FINAL
    ========================================================= */
 .ira-final{
-  background: var(--green);
-  color: #fff;
-  padding: clamp(70px, 10vw, 120px) 0;
+  position: relative;
+  overflow: hidden;
+  padding: clamp(84px, 11vw, 148px) 0;
   text-align: center;
+  color: #fff;
+  background: linear-gradient(135deg, #123a1c 0%, var(--green) 52%, #1d5c2c 100%);
 }
+.ira-final::before{
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: radial-gradient(closest-side, rgba(255,255,255,.20), transparent 68%);
+  animation: iraGlow 17s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+@keyframes iraGlow{
+  0%   { transform: translate3d(-14%, -10%, 0) scale(1); }
+  100% { transform: translate3d(16%, 12%, 0) scale(1.18); }
+}
+
 .ira-final__inner{
+  position: relative;
+  z-index: 1;
   max-width: 760px;
   margin-inline: auto;
 }
 .ira-final h2{
-  font-family: "Lexend", sans-serif;
-  font-size: clamp(1.7rem, 3.2vw, 2.4rem);
-  line-height: 1.2;
+  font-size: clamp(1.8rem, 3.6vw, 2.7rem);
+  line-height: 1.16;
   font-weight: 600;
+  letter-spacing: -.03em;
   margin: 0 0 1.2rem;
-  letter-spacing: -.02em;
+}
+.ira-final h2 em{
+  font-family: "DM Serif Display", serif;
+  font-style: italic;
+  font-weight: 400;
+  color: #cfe9d3;
 }
 .ira-final p{
-  font-family: "Lexend", sans-serif;
   font-size: 1.02rem;
   font-weight: 300;
-  color: rgba(255,255,255,.9);
-  margin: 0 0 2.2rem;
+  color: rgba(255,255,255,.88);
+  margin: 0 0 2.4rem;
+  line-height: 1.7;
 }
-.ira-final .ira-btn--light{ border-color: #fff; }
-.ira-final .ira-btn--light:hover{ background: #fff; color: var(--green); }
+
+.ira-final .ira-reveal{
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity .9s var(--ease), transform .9s var(--ease);
+}
+.ira-final.is-inview .ira-reveal{ opacity: 1; transform: none; }
+.ira-final.is-inview .ira-reveal:nth-child(1){ transition-delay: .05s; }
+.ira-final.is-inview .ira-reveal:nth-child(2){ transition-delay: .18s; }
+.ira-final.is-inview .ira-reveal:nth-child(3){ transition-delay: .30s; }
 
 /* =========================================================
    RESPONSIVE
@@ -285,22 +551,67 @@ a   { color: inherit; text-decoration: none; }
 @media (max-width: 900px){
   .ira-expertise__row{
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 2.2rem;
   }
   .ira-expertise--reverse .ira-expertise__media,
   .ira-expertise--reverse .ira-expertise__content{
     order: initial;
   }
+  .ira-expertise--reverse .ira-expertise__media{ clip-path: inset(0 0 100% 0); }
+  .ira-expertise--reverse.is-inview .ira-expertise__media{ clip-path: inset(0 0 0 0); }
+
   .ira-expertise__content{ max-width: none; }
   .ira-expertise__media{ aspect-ratio: 16 / 10; }
+}
+
+/* =========================================================
+   MOUVEMENT RÉDUIT
+   ========================================================= */
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+  .ira-pagehero .ira-eyebrow,
+  .ira-pagehero__title .line > span,
+  .ira-pagehero__lead,
+  .ira-scrollcue,
+  .ira-expertise__marker,
+  .ira-expertise__rule,
+  .ira-expertise .ira-title,
+  .ira-expertise__desc,
+  .ira-expertise__list li,
+  .ira-expertise__list li::before,
+  .ira-expertise__media,
+  .ira-expertise__media img,
+  .ira-final .ira-reveal{
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
 }
 </style>
 </head>
 
 <body>
 
+<!-- BARRE DE PROGRESSION -->
+<div class="ira-progress" aria-hidden="true"><span id="iraProgressBar"></span></div>
+
+<!-- RAIL LATÉRAL -->
+<nav class="ira-rail" aria-label="Navigation des expertises">
+  <a href="#data-collecte" data-label="Data &amp; collecte" aria-label="Data, collecte et outils numériques"></a>
+  <a href="#recherche"    data-label="Recherche appliquée" aria-label="Recherche appliquée et analyse socio-économique"></a>
+  <a href="#evaluation"   data-label="Évaluation d'impact" aria-label="Évaluation d'impact et suivi-évaluation"></a>
+  <a href="#conseil-data" data-label="Conseil stratégique" aria-label="Conseil stratégique et institutionnel"></a>
+  <a href="#formation"    data-label="Formation" aria-label="Formation et renforcement des capacités"></a>
+</nav>
+
 <!-- HEADER (injecté) -->
 <div id="site-header"></div>
+
+<main>
 
 <!-- =========================================================
      EN-TÊTE DE PAGE
@@ -309,30 +620,41 @@ a   { color: inherit; text-decoration: none; }
   <div class="ira-wrap">
     <div class="ira-pagehero__inner">
       <p class="ira-eyebrow">Expertises</p>
-      <h1 class="ira-pagehero__title">Cinq domaines,<br>une même exigence de preuve.</h1>
+      <h1 class="ira-pagehero__title">
+        <span class="line"><span>Cinq domaines,</span></span>
+        <span class="line"><span>une même <em>exigence de preuve.</em></span></span>
+      </h1>
       <p class="ira-pagehero__lead">
         De la collecte de données sur le terrain jusqu'à l'appui stratégique,
         IRA intervient sur toute la chaîne de valeur de l'évidence — avec des méthodes
         éprouvées et adaptées à chaque contexte.
       </p>
+      <div class="ira-scrollcue" aria-hidden="true">
+        <span class="ira-scrollcue__track"></span>
+        <span>Explorer</span>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- =========================================================
-     1. DATA, COLLECTE & OUTILS NUMÉRIQUES
+     01 — DATA, COLLECTE & OUTILS NUMÉRIQUES
      ========================================================= -->
-<section class="ira-expertise" id="data-collecte">
+<section class="ira-expertise" id="data-collecte" data-reveal>
   <div class="ira-wrap">
     <div class="ira-expertise__row">
 
       <div class="ira-expertise__media">
         <img src="/images/Data-collecte-outils-numériques.jpg"
-             alt="Collecte de données et outils numériques — IRA">
+             alt="Collecte de données et outils numériques — IRA"
+             loading="lazy" decoding="async">
       </div>
 
       <div class="ira-expertise__content">
-        <span class="ira-section-line" aria-hidden="true"></span>
+        <div class="ira-expertise__marker">
+          <span class="ira-expertise__num">01</span>
+          <span class="ira-expertise__rule" aria-hidden="true"></span>
+        </div>
         <h2 class="ira-title">Data, collecte &amp; outils numériques</h2>
         <p class="ira-expertise__desc">
           Nous garantissons la fiabilité des données, de la collecte de terrain
@@ -351,19 +673,23 @@ a   { color: inherit; text-decoration: none; }
 </section>
 
 <!-- =========================================================
-     2. RECHERCHE APPLIQUÉE & ANALYSE SOCIO-ÉCONOMIQUE
+     02 — RECHERCHE APPLIQUÉE & ANALYSE SOCIO-ÉCONOMIQUE
      ========================================================= -->
-<section class="ira-expertise ira-expertise--reverse" id="recherche">
+<section class="ira-expertise ira-expertise--reverse ira-expertise--alt" id="recherche" data-reveal>
   <div class="ira-wrap">
     <div class="ira-expertise__row">
 
       <div class="ira-expertise__media">
         <img src="/images/Recherche-appliquée-analyse-socio-économique.jpg"
-             alt="Recherche appliquée et analyse socio-économique — IRA">
+             alt="Recherche appliquée et analyse socio-économique — IRA"
+             loading="lazy" decoding="async">
       </div>
 
       <div class="ira-expertise__content">
-        <span class="ira-section-line" aria-hidden="true"></span>
+        <div class="ira-expertise__marker">
+          <span class="ira-expertise__num">02</span>
+          <span class="ira-expertise__rule" aria-hidden="true"></span>
+        </div>
         <h2 class="ira-title">Recherche appliquée &amp; analyse socio-économique</h2>
         <p class="ira-expertise__desc">
           Nous concevons et conduisons des études, enquêtes et analyses socio-économiques
@@ -383,19 +709,23 @@ a   { color: inherit; text-decoration: none; }
 </section>
 
 <!-- =========================================================
-     3. ÉVALUATION D'IMPACT & SUIVI-ÉVALUATION
+     03 — ÉVALUATION D'IMPACT & SUIVI-ÉVALUATION
      ========================================================= -->
-<section class="ira-expertise" id="evaluation">
+<section class="ira-expertise" id="evaluation" data-reveal>
   <div class="ira-wrap">
     <div class="ira-expertise__row">
 
       <div class="ira-expertise__media">
         <img src="/images/évaluation-d'impact-suivi-évaluation.jpg"
-             alt="Évaluation d'impact et suivi-évaluation — IRA">
+             alt="Évaluation d'impact et suivi-évaluation — IRA"
+             loading="lazy" decoding="async">
       </div>
 
       <div class="ira-expertise__content">
-        <span class="ira-section-line" aria-hidden="true"></span>
+        <div class="ira-expertise__marker">
+          <span class="ira-expertise__num">03</span>
+          <span class="ira-expertise__rule" aria-hidden="true"></span>
+        </div>
         <h2 class="ira-title">Évaluation d'impact &amp; suivi-évaluation</h2>
         <p class="ira-expertise__desc">
           Nous mesurons ce qui fonctionne réellement — et pourquoi — à l'aide d'approches
@@ -415,19 +745,23 @@ a   { color: inherit; text-decoration: none; }
 </section>
 
 <!-- =========================================================
-     4. CONSEIL STRATÉGIQUE & INSTITUTIONNEL
+     04 — CONSEIL STRATÉGIQUE & INSTITUTIONNEL
      ========================================================= -->
-<section class="ira-expertise ira-expertise--reverse" id="conseil-data">
+<section class="ira-expertise ira-expertise--reverse ira-expertise--alt" id="conseil-data" data-reveal>
   <div class="ira-wrap">
     <div class="ira-expertise__row">
 
       <div class="ira-expertise__media">
         <img src="/images/Conseil-stratégique-institutionnel.jpg"
-             alt="Conseil stratégique et institutionnel — IRA">
+             alt="Conseil stratégique et institutionnel — IRA"
+             loading="lazy" decoding="async">
       </div>
 
       <div class="ira-expertise__content">
-        <span class="ira-section-line" aria-hidden="true"></span>
+        <div class="ira-expertise__marker">
+          <span class="ira-expertise__num">04</span>
+          <span class="ira-expertise__rule" aria-hidden="true"></span>
+        </div>
         <h2 class="ira-title">Conseil stratégique &amp; institutionnel</h2>
         <p class="ira-expertise__desc">
           Nous transformons les constats issus de la recherche en choix stratégiques
@@ -446,24 +780,34 @@ a   { color: inherit; text-decoration: none; }
 </section>
 
 <!-- =========================================================
-     5. FORMATION & RENFORCEMENT DES CAPACITÉS
+     05 — FORMATION & RENFORCEMENT DES CAPACITÉS
      ========================================================= -->
-<section class="ira-expertise" id="formation">
+<section class="ira-expertise" id="formation" data-reveal>
   <div class="ira-wrap">
     <div class="ira-expertise__row">
 
       <div class="ira-expertise__media">
         <img src="/images/Formation-renforcement-des-capacités.jpg"
-             alt="Formation et renforcement des capacités — IRA">
+             alt="Formation et renforcement des capacités — IRA"
+             loading="lazy" decoding="async">
       </div>
 
       <div class="ira-expertise__content">
-        <span class="ira-section-line" aria-hidden="true"></span>
+        <div class="ira-expertise__marker">
+          <span class="ira-expertise__num">05</span>
+          <span class="ira-expertise__rule" aria-hidden="true"></span>
+        </div>
         <h2 class="ira-title">Formation &amp; renforcement des capacités</h2>
         <p class="ira-expertise__desc">
           Nous transférons nos méthodes aux équipes de nos partenaires, pour renforcer
           durablement leur autonomie.
         </p>
+        <ul class="ira-expertise__list">
+          <li>Conception et animation de modules de formation sur mesure</li>
+          <li>Ateliers pratiques sur les méthodes d'évaluation et l'analyse de données</li>
+          <li>Accompagnement technique des équipes internes (mentorat, appui-conseil)</li>
+          <li>Production de guides méthodologiques et de supports pédagogiques</li>
+        </ul>
       </div>
 
     </div>
@@ -473,38 +817,125 @@ a   { color: inherit; text-decoration: none; }
 <!-- =========================================================
      APPEL FINAL
      ========================================================= -->
-<section class="ira-final">
+<section class="ira-final" data-reveal-final>
   <div class="ira-wrap">
     <div class="ira-final__inner">
-      <h2>Un besoin qui touche l'un de ces domaines&nbsp;?</h2>
-      <p>
+      <h2 class="ira-reveal">Un besoin qui touche l'un de ces domaines&nbsp;?</h2>
+      <p class="ira-reveal">
         Décrivez-nous votre contexte — nous vous proposons un premier échange
         pour identifier l'approche et les méthodes les plus adaptées.
       </p>
-      <a href="/consultations" class="ira-btn ira-btn--light">
-        Demander une consultation
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </a>
+      <div class="ira-reveal">
+        <a href="/consultations" class="ira-btn ira-btn--light">
+          Demander une consultation
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+      </div>
     </div>
   </div>
 </section>
+
+</main>
 
 <!-- FOOTER (injecté) -->
 <div id="site-footer"></div>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    fetch("/components/header.html")
-      .then(function (r) { return r.ok ? r.text() : ""; })
-      .then(function (html) { if (html) document.getElementById("site-header").innerHTML = html; })
-      .catch(function () {});
-
-    fetch("/components/footer.html")
-      .then(function (r) { return r.ok ? r.text() : ""; })
-      .then(function (html) { if (html) document.getElementById("site-footer").innerHTML = html; })
-      .catch(function () {});
+/* =========================================================
+   1. ENTRÉE DU HERO
+   ========================================================= */
+document.addEventListener("DOMContentLoaded", function () {
+  requestAnimationFrame(function () {
+    document.body.classList.add("is-ready");
   });
+});
+
+/* =========================================================
+   2. RÉVÉLATION AU DÉFILEMENT
+   ========================================================= */
+(function () {
+  var targets = document.querySelectorAll("[data-reveal], [data-reveal-final]");
+  if (!("IntersectionObserver" in window)) {
+    targets.forEach(function (el) { el.classList.add("is-inview"); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-inview");
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+
+  targets.forEach(function (el) { io.observe(el); });
+})();
+
+/* =========================================================
+   3. BARRE DE PROGRESSION
+   ========================================================= */
+(function () {
+  var bar = document.getElementById("iraProgressBar");
+  if (!bar) return;
+  var ticking = false;
+
+  function update() {
+    var doc = document.documentElement;
+    var max = doc.scrollHeight - window.innerHeight;
+    var p = max > 0 ? window.scrollY / max : 0;
+    bar.style.transform = "scaleX(" + Math.min(Math.max(p, 0), 1) + ")";
+    ticking = false;
+  }
+
+  window.addEventListener("scroll", function () {
+    if (!ticking) { requestAnimationFrame(update); ticking = true; }
+  }, { passive: true });
+
+  window.addEventListener("resize", update, { passive: true });
+  update();
+})();
+
+/* =========================================================
+   4. RAIL — SECTION ACTIVE
+   ========================================================= */
+(function () {
+  var links = document.querySelectorAll(".ira-rail a");
+  var sections = document.querySelectorAll(".ira-expertise");
+  if (!links.length || !sections.length || !("IntersectionObserver" in window)) return;
+
+  var spy = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      var id = "#" + entry.target.id;
+      links.forEach(function (l) {
+        l.classList.toggle("is-active", l.getAttribute("href") === id);
+      });
+    });
+  }, { rootMargin: "-45% 0px -45% 0px", threshold: 0 });
+
+  sections.forEach(function (s) { spy.observe(s); });
+})();
+
+/* =========================================================
+   5. INJECTION HEADER / FOOTER
+   ========================================================= */
+document.addEventListener("DOMContentLoaded", function () {
+  fetch("/components/header.html")
+    .then(function (r) { return r.ok ? r.text() : ""; })
+    .then(function (html) { if (html) document.getElementById("site-header").innerHTML = html; })
+    .catch(function () {});
+
+  fetch("/components/footer.html")
+    .then(function (r) { return r.ok ? r.text() : ""; })
+    .then(function (html) { if (html) document.getElementById("site-footer").innerHTML = html; })
+    .catch(function () {});
+});
 </script>
 
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"6f893744bf8e47bcbbe99f556b4b2898","r":1,"spa":2}' crossorigin="anonymous"></script>
 </body>
 </html>
