@@ -1,6 +1,656 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IRA — Impact Research &amp; Advisory</title>
+<meta name="description" content="IRA accompagne institutions publiques, bailleurs, ONG et entreprises dans la production et l'usage de preuves rigoureuses en RDC et en Afrique centrale.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================
+   IRA — SYSTÈME VISUEL
+   ========================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+
+:root{
+  --navy-deep:  #0b1530;
+  --navy:       #16264a;
+  --navy-soft:  #1e2f57;
+  --gold:       #c9a961;
+  --gold-soft:  #dcc188;
+  --sand:       #f5efe5;
+  --sand-soft:  #faf6ee;
+  --ink:        #0b1530;
+  --muted:      #5a6273;
+  --line:       #e5e1d7;
+  --line-dark:  rgba(255,255,255,.12);
+  --radius:     4px;
+  --max:        1200px;
+}
+
+html { scroll-behavior: smooth; }
+
+body{
+  margin: 0;
+  background: var(--sand-soft);
+  color: var(--ink);
+  font-family: "Manrope", "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img { max-width: 100%; display: block; }
+a   { color: inherit; text-decoration: none; }
+
+h1, h2, h3, h4, .display {
+  font-family: "Sora", "Manrope", sans-serif;
+  letter-spacing: -.02em;
+  font-weight: 600;
+  color: var(--navy-deep);
+  margin: 0;
+}
+
+.ira-wrap{
+  width: min(100% - 40px, var(--max));
+  margin-inline: auto;
+}
+
+/* eyebrow */
+.ira-eyebrow{
+  font-family: "Manrope", sans-serif;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0 0 1rem;
+}
+.ira-eyebrow--dark{ color: var(--gold); }
+
+/* titres */
+.ira-title{
+  font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -.025em;
+  color: var(--navy-deep);
+  margin: 0 0 1rem;
+}
+.ira-lead{
+  font-family: "Manrope", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 300;
+  color: var(--muted);
+  max-width: 62ch;
+  margin: 0;
+}
+
+/* boutons */
+.ira-btn{
+  display: inline-flex;
+  align-items: center;
+  gap: .55em;
+  padding: .95rem 1.6rem;
+  border-radius: var(--radius);
+  font-family: "Manrope", sans-serif;
+  font-weight: 600;
+  font-size: .88rem;
+  letter-spacing: .02em;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: transform .2s ease, background-color .25s ease, color .25s ease, border-color .25s ease;
+  white-space: nowrap;
+}
+.ira-btn:hover { transform: translateY(-2px); }
+
+.ira-btn--primary{
+  background: var(--navy);
+  color: #fff;
+  border-color: var(--navy);
+}
+.ira-btn--primary:hover{
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy-deep);
+}
+
+.ira-btn--gold{
+  background: var(--gold);
+  color: var(--navy-deep);
+  border-color: var(--gold);
+}
+.ira-btn--gold:hover{
+  background: var(--gold-soft);
+  border-color: var(--gold-soft);
+}
+
+.ira-btn--ghost{
+  background: transparent;
+  color: var(--navy-deep);
+  border-color: var(--navy-deep);
+}
+.ira-btn--ghost:hover{
+  background: var(--navy-deep);
+  color: #fff;
+}
+
+.ira-btn--light{
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255,255,255,.7);
+}
+.ira-btn--light:hover{
+  background: #fff;
+  color: var(--navy-deep);
+  border-color: #fff;
+}
+
+/* =========================================================
+   HEADER (injecté)
+   ========================================================= */
+#site-header{ position: sticky; top: 0; z-index: 50; }
+
+/* =========================================================
+   HERO — SLIDER
+   ========================================================= */
+.ira-slider{
+  position: relative;
+  height: clamp(560px, 86vh, 840px);
+  background: var(--navy-deep);
+  overflow: hidden;
+  isolation: isolate;
+}
+.ira-slider:focus-visible{ outline: 2px solid var(--gold); outline-offset: -4px; }
+
+.ira-slider__viewport{ position: absolute; inset: 0; }
+
+.ira-slide{
+  position: absolute; inset: 0;
+  opacity: 0; visibility: hidden;
+  transition: opacity 1s ease, visibility 1s ease;
+}
+.ira-slide.is-active{ opacity: 1; visibility: visible; z-index: 2; }
+
+.ira-slide__bg{ position: absolute; inset: 0; overflow: hidden; }
+.ira-slide__bg img{
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  transform: scale(1);
+  will-change: transform;
+}
+.ira-slide.is-active .ira-slide__bg img{ animation: iraKenBurns 9s ease-out forwards; }
+@keyframes iraKenBurns{
+  from { transform: scale(1.09); }
+  to   { transform: scale(1); }
+}
+
+.ira-slide__scrim{
+  position: absolute; inset: 0 auto 0 0;
+  width: min(62%, 760px);
+  pointer-events: none; z-index: 1;
+  background: linear-gradient(
+    90deg,
+    rgba(11, 21, 48, .92) 0%,
+    rgba(11, 21, 48, .72) 42%,
+    rgba(11, 21, 48, .22) 78%,
+    rgba(11, 21, 48, 0)  100%
+  );
+}
+
+.ira-slide__icons{
+  position: absolute; inset: 0 auto 0 0;
+  width: min(62%, 760px);
+  pointer-events: none; z-index: 2; overflow: hidden;
+}
+.ira-slide__icon{
+  position: absolute;
+  width: clamp(36px, 4.6vw, 68px);
+  height: auto;
+  color: var(--gold);
+  opacity: .16;
+}
+
+.ira-slide__inner{
+  position: relative; z-index: 3;
+  height: 100%;
+  display: flex; align-items: flex-end;
+  padding-top: 80px;
+  padding-bottom: clamp(96px, 14vh, 170px);
+}
+.ira-slide__panel{ max-width: 720px; text-align: left; color: #fff; }
+
+.ira-slide__title{
+  font-family: "Sora", sans-serif;
+  font-weight: 600;
+  font-size: clamp(1.4rem, 2.9vw, 2.25rem);
+  line-height: 1.16;
+  letter-spacing: -.025em;
+  color: #fff;
+  margin: 0 0 1rem;
+}
+.ira-slide__desc{
+  font-family: "Manrope", sans-serif;
+  font-weight: 600;
+  font-size: clamp(.72rem, 1vw, .82rem);
+  line-height: 1.5;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0 0 2rem;
+  max-width: 48ch;
+}
+
+.ira-slide__cta{
+  display: inline-flex; align-items: center; gap: .6rem;
+  font-family: "Manrope", sans-serif;
+  font-weight: 600; font-size: .88rem; color: #fff;
+  letter-spacing: .02em;
+  padding-bottom: .35rem;
+  border-bottom: 1.5px solid var(--gold);
+  transition: gap .25s ease, color .25s ease, border-color .25s ease;
+}
+.ira-slide__cta:hover{ gap: 1rem; color: var(--gold); border-color: var(--gold); }
+.ira-slide__cta svg{ width: 15px; height: 15px; }
+
+.ira-slide__cta--wide{
+  display: inline-flex; align-items: center; gap: .7rem;
+  padding: 1.05rem 2.2rem;
+  border-radius: var(--radius);
+  background: var(--gold);
+  border: 1.5px solid var(--gold);
+  color: var(--navy-deep);
+  font-weight: 600; font-size: .95rem;
+  transition: background .25s ease, border-color .25s ease, transform .25s ease, gap .25s ease;
+}
+.ira-slide__cta--wide:hover{
+  background: #fff; border-color: #fff; color: var(--navy-deep);
+  transform: translateY(-2px); gap: 1rem;
+}
+.ira-slide__cta--wide svg{ width: 16px; height: 16px; }
+
+@keyframes iraRevealUp{
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.ira-slide .ira-slide__title,
+.ira-slide .ira-slide__desc,
+.ira-slide .ira-slide__cta{
+  opacity: 0; transform: translateY(28px);
+}
+.ira-slide.is-active .ira-slide__title{ animation: iraRevealUp .8s cubic-bezier(.22,.61,.36,1) .15s forwards; }
+.ira-slide.is-active .ira-slide__desc { animation: iraRevealUp .8s cubic-bezier(.22,.61,.36,1) .30s forwards; }
+.ira-slide.is-active .ira-slide__cta  { animation: iraRevealUp .8s cubic-bezier(.22,.61,.36,1) .45s forwards; }
+
+.ira-slider__nav{
+  position: absolute; z-index: 5;
+  right: max(20px, calc((100% - var(--max)) / 2));
+  bottom: clamp(30px, 5vw, 56px);
+  display: flex; gap: .7rem;
+}
+.ira-slider__arrow{
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0; cursor: pointer;
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,.5);
+  background: rgba(11, 21, 48, .35);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition: background .25s ease, color .25s ease, border-color .25s ease, transform .25s ease;
+}
+.ira-slider__arrow:hover{
+  background: var(--gold); color: var(--navy-deep); border-color: var(--gold);
+  transform: translateY(-2px);
+}
+.ira-slider__arrow:focus-visible{ outline: 2px solid #fff; outline-offset: 3px; }
+.ira-slider__arrow svg{ width: 18px; height: 18px; }
+
+.ira-slider__dots{
+  position: absolute; z-index: 5;
+  right: max(20px, calc((100% - var(--max)) / 2));
+  bottom: clamp(88px, 11vw, 124px);
+  display: flex; align-items: center; gap: .55rem;
+}
+.ira-slider__dot{
+  width: 34px; height: 3px;
+  padding: 0; border: 0; border-radius: 99px;
+  cursor: pointer;
+  background: rgba(255,255,255,.35);
+  transition: background .3s ease, width .3s ease;
+}
+.ira-slider__dot:hover{ background: rgba(255,255,255,.7); }
+.ira-slider__dot.is-active{ background: var(--gold); width: 58px; }
+.ira-slider__dot:focus-visible{ outline: 2px solid #fff; outline-offset: 4px; }
+
+@media (max-width: 820px){
+  .ira-slider{ height: 88vh; min-height: 640px; }
+  .ira-slide__scrim{
+    inset: auto 0 0 0; width: 100%; height: 68%;
+    background: linear-gradient(
+      180deg,
+      rgba(11,21,48,0)   0%,
+      rgba(11,21,48,.55) 42%,
+      rgba(11,21,48,.88) 100%
+    );
+  }
+  .ira-slide__icons{ inset: auto 0 0 0; width: 100%; height: 68%; }
+  .ira-slide__inner{ align-items: flex-end; padding-top: 70px; padding-bottom: 160px; }
+  .ira-slide__panel{ max-width: 100%; }
+  .ira-slider__nav{ right: 20px; bottom: 22px; }
+  .ira-slider__arrow{ width: 46px; height: 46px; }
+  .ira-slider__dots{ right: 20px; bottom: 84px; }
+}
+@media (prefers-reduced-motion: reduce){
+  .ira-slide, .ira-slide__bg img, .ira-slider__arrow, .ira-slider__dot{ transition: none !important; }
+  .ira-slide.is-active .ira-slide__bg img{ animation: none; }
+  .ira-slide .ira-slide__title,
+  .ira-slide .ira-slide__desc,
+  .ira-slide .ira-slide__cta{ opacity: 1; transform: none; animation: none !important; }
+}
+
+/* =========================================================
+   INTRO
+   ========================================================= */
+.ira-intro{
+  background: #ffffff;
+  padding: clamp(60px, 9vw, 110px) 0;
+}
+.ira-intro__inner{ max-width: 880px; margin-inline: auto; text-align: center; }
+.ira-intro__text{
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  line-height: 1.6; font-weight: 300;
+  color: var(--ink);
+  margin: 0 0 2.2rem;
+}
+.ira-intro__text strong{ font-weight: 600; color: var(--navy-deep); }
+.ira-intro__cta{ display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+/* =========================================================
+   STATS (bande sable)
+   ========================================================= */
+.ira-stats{
+  background: var(--sand);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: clamp(50px, 7vw, 80px) 0;
+}
+.ira-stats__grid{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+.ira-stat__num{
+  font-family: "Sora", sans-serif;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 600;
+  color: var(--navy-deep);
+  letter-spacing: -.03em;
+  margin: 0 0 .35rem;
+}
+.ira-stat__num span{ color: var(--gold); }
+.ira-stat__label{
+  font-family: "Manrope", sans-serif;
+  font-size: .78rem;
+  font-weight: 500;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0;
+}
+@media (max-width: 720px){ .ira-stats__grid{ grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 420px){ .ira-stats__grid{ grid-template-columns: 1fr; gap: 1.5rem; } }
+
+/* =========================================================
+   POURQUOI IRA
+   ========================================================= */
+.ira-why{
+  background: var(--sand-soft);
+  padding: clamp(70px, 10vw, 130px) 0;
+}
+.ira-why__head{ max-width: 720px; }
+.ira-why__grid{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.4rem;
+  margin-top: 3rem;
+}
+.ira-why__card{
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 2rem 1.6rem;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.ira-why__card:hover{
+  transform: translateY(-4px);
+  border-color: var(--gold);
+  box-shadow: 0 20px 45px -25px rgba(11,21,48,.28);
+}
+.ira-why__icon{
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: rgba(201,169,97,.14);
+  color: var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1.3rem;
+}
+.ira-why__icon svg{ width: 24px; height: 24px; }
+.ira-why__card h3{
+  font-family: "Sora", sans-serif;
+  font-size: 1rem; font-weight: 600;
+  margin: 0 0 .7rem;
+  letter-spacing: -.015em;
+  color: var(--navy-deep);
+}
+.ira-why__card p{
+  font-family: "Manrope", sans-serif;
+  font-size: .9rem; font-weight: 300;
+  color: var(--muted);
+  margin: 0;
+}
+@media (max-width: 1024px){ .ira-why__grid{ grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px){ .ira-why__grid{ grid-template-columns: 1fr; gap: 1.2rem; } }
+
+/* =========================================================
+   EXPERTISES
+   ========================================================= */
+.ira-expertise{
+  background: #fff;
+  padding: clamp(70px, 10vw, 130px) 0;
+  border-top: 1px solid var(--line);
+}
+.ira-expertise__figure{
+  margin: 0 0 clamp(2.5rem, 5vw, 4rem);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--sand);
+  max-height: 400px;
+  display: flex; justify-content: center; align-items: center;
+}
+.ira-expertise__figure img{
+  display: block;
+  max-width: 100%; max-height: 400px;
+  width: 100%; height: auto;
+  object-fit: cover;
+}
+@media (max-width: 720px){
+  .ira-expertise__figure{ max-height: 260px; }
+  .ira-expertise__figure img{ max-height: 260px; }
+}
+.ira-expertise__head{
+  display: flex; justify-content: space-between; align-items: flex-end;
+  gap: 2rem; flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+.ira-expertise__list{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem;
+}
+.ira-exp-item{
+  display: flex; align-items: flex-start; gap: 1.2rem;
+  padding: 1.6rem 1.7rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--sand-soft);
+  transition: border-color .25s ease, transform .25s ease, background .25s ease;
+}
+.ira-exp-item:hover{
+  border-color: var(--gold);
+  transform: translateX(4px);
+  background: #fff;
+}
+.ira-exp-item__num{
+  font-family: "Sora", sans-serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--gold);
+  line-height: 1;
+  min-width: 38px;
+  letter-spacing: -.03em;
+}
+.ira-exp-item__body h3{
+  font-family: "Sora", sans-serif;
+  font-size: .98rem; font-weight: 600;
+  margin: 0 0 .35rem;
+  color: var(--navy-deep);
+  letter-spacing: -.015em;
+}
+.ira-exp-item__body p{
+  font-family: "Manrope", sans-serif;
+  font-size: .88rem; font-weight: 300;
+  color: var(--muted);
+  margin: 0;
+}
+@media (max-width: 820px){ .ira-expertise__list{ grid-template-columns: 1fr; } }
+
+/* =========================================================
+   APPROCHE
+   ========================================================= */
+.ira-approach{
+  position: relative;
+  padding: clamp(80px, 11vw, 140px) 0;
+  background: var(--navy-deep);
+  color: #fff;
+  overflow: hidden;
+}
+.ira-approach::before{
+  content: "";
+  position: absolute; inset: 0;
+  background-image: url('/images/ira-workshop.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: .12;
+  z-index: 0;
+}
+.ira-approach__inner{ position: relative; z-index: 1; }
+.ira-approach .ira-title{ color: #fff; }
+.ira-approach .ira-lead{ color: rgba(255,255,255,.75); }
+.ira-approach .ira-eyebrow{ color: var(--gold); }
+
+.ira-approach__grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.4rem;
+  margin-top: 3rem;
+}
+.ira-approach__card{
+  padding: 2rem 1.8rem;
+  border: 1px solid var(--line-dark);
+  border-radius: var(--radius);
+  background: rgba(255,255,255,.03);
+  transition: border-color .25s ease, background .25s ease, transform .25s ease;
+}
+.ira-approach__card:hover{
+  border-color: var(--gold);
+  background: rgba(255,255,255,.06);
+  transform: translateY(-4px);
+}
+.ira-approach__card .ira-why__icon{
+  background: rgba(201,169,97,.16);
+  color: var(--gold);
+}
+.ira-approach__card h3{
+  font-family: "Sora", sans-serif;
+  font-size: 1.1rem; font-weight: 600;
+  margin: 0 0 .6rem;
+  color: #fff;
+  letter-spacing: -.015em;
+}
+.ira-approach__card p{
+  font-family: "Manrope", sans-serif;
+  font-size: .9rem; font-weight: 300;
+  color: rgba(255,255,255,.75);
+  margin: 0;
+}
+.ira-approach__link{
+  display: inline-flex; align-items: center; gap: .5rem;
+  margin-top: 2.8rem;
+  font-family: "Manrope", sans-serif;
+  font-weight: 600; font-size: .9rem;
+  letter-spacing: .02em;
+  color: #fff;
+  border-bottom: 1.5px solid var(--gold);
+  padding-bottom: .25rem;
+  transition: gap .25s ease, color .25s ease;
+}
+.ira-approach__link:hover{ gap: .9rem; color: var(--gold); }
+.ira-approach__link svg{ width: 16px; height: 16px; }
+@media (max-width: 900px){ .ira-approach__grid{ grid-template-columns: 1fr; gap: 1.2rem; } }
+
+/* =========================================================
+   APPEL FINAL
+   ========================================================= */
+.ira-final{
+  background: var(--sand);
+  color: var(--navy-deep);
+  padding: clamp(70px, 10vw, 120px) 0;
+  text-align: center;
+  border-top: 1px solid var(--line);
+}
+.ira-final__inner{ max-width: 780px; margin-inline: auto; }
+.ira-final h2{
+  font-family: "Sora", sans-serif;
+  font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+  line-height: 1.2; font-weight: 600;
+  margin: 0 0 1.2rem;
+  letter-spacing: -.025em;
+  color: var(--navy-deep);
+}
+.ira-final p{
+  font-family: "Manrope", sans-serif;
+  font-size: 1.02rem; font-weight: 300;
+  color: var(--muted);
+  margin: 0 0 2.2rem;
+}
+.ira-final .ira-btn--primary{
+  background: var(--navy-deep);
+  border-color: var(--navy-deep);
+}
+.ira-final .ira-btn--primary:hover{
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy-deep);
+}
+
+/* =========================================================
+   FOOTER (injecté)
+   ========================================================= */
+#site-footer{ display: block; }
+</style>
+</head>
+
 <body>
 
-<!-- HEADER (injected) -->
+<!-- HEADER -->
 <div id="site-header"></div>
 
 <!-- =========================================================
@@ -9,16 +659,15 @@
 <section class="ira-slider"
          id="hero"
          tabindex="0"
-         aria-roledescription="carousel"
-         aria-label="ADEL's areas of practice">
+         aria-roledescription="carrousel"
+         aria-label="Nos domaines d'intervention">
 
   <div class="ira-slider__viewport">
 
     <!-- SLIDE 1 -->
-    <article class="ira-slide is-active" role="group" aria-roledescription="slide" aria-label="1 of 4">
+    <article class="ira-slide is-active" role="group" aria-roledescription="diapositive" aria-label="1 sur 4">
       <div class="ira-slide__bg">
-        <img src="/assets/hero-1.jpg"
-             alt="Field research across Africa" width="1920" height="1080">
+        <img src="/images/slider/recherche.jpg" alt="Recherche appliquée et analyse socio-économique" width="1920" height="1080">
       </div>
       <div class="ira-slide__scrim" aria-hidden="true"></div>
       <div class="ira-slide__icons" aria-hidden="true">
@@ -30,10 +679,10 @@
       </div>
       <div class="ira-wrap ira-slide__inner">
         <div class="ira-slide__panel">
-          <h2 class="ira-slide__title">Measuring what actually works — and why it works.</h2>
-          <p class="ira-slide__desc">Impact Evaluation &amp; Counterfactual Design</p>
-          <a href="/services" class="ira-slide__cta">
-            Explore
+          <h2 class="ira-slide__title">Comprendre une réalité sociale ou économique pour éclairer une décision.</h2>
+          <p class="ira-slide__desc">Recherche appliquée &amp; analyse socio-économique</p>
+          <a href="/expertises/" class="ira-slide__cta">
+            Découvrir
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>
         </div>
@@ -41,10 +690,9 @@
     </article>
 
     <!-- SLIDE 2 -->
-    <article class="ira-slide" role="group" aria-roledescription="slide" aria-label="2 of 4">
+    <article class="ira-slide" role="group" aria-roledescription="diapositive" aria-label="2 sur 4">
       <div class="ira-slide__bg">
-        <img src="/assets/network-CY0e7bfM.jpg"
-             alt="Data systems and analytics" loading="lazy" width="1920" height="1080">
+        <img src="/images/slider/suivi.jpg" alt="Évaluation d'impact et suivi-évaluation" loading="lazy" width="1920" height="1080">
       </div>
       <div class="ira-slide__scrim" aria-hidden="true"></div>
       <div class="ira-slide__icons" aria-hidden="true">
@@ -56,10 +704,10 @@
       </div>
       <div class="ira-wrap ira-slide__inner">
         <div class="ira-slide__panel">
-          <h2 class="ira-slide__title">Building evidence systems that outlast the programme.</h2>
-          <p class="ira-slide__desc">Monitoring, Evaluation &amp; Learning (MEL)</p>
-          <a href="/services" class="ira-slide__cta">
-            Explore
+          <h2 class="ira-slide__title">Mesurer ce qui fonctionne réellement, et pourquoi.</h2>
+          <p class="ira-slide__desc">Évaluation d'impact &amp; suivi-évaluation</p>
+          <a href="/expertises/" class="ira-slide__cta">
+            Découvrir
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>
         </div>
@@ -67,10 +715,9 @@
     </article>
 
     <!-- SLIDE 3 -->
-    <article class="ira-slide" role="group" aria-roledescription="slide" aria-label="3 of 4">
+    <article class="ira-slide" role="group" aria-roledescription="diapositive" aria-label="3 sur 4">
       <div class="ira-slide__bg">
-        <img src="/assets/hero-3.jpg"
-             alt="Policy and applied econometrics" loading="lazy" width="1920" height="1080">
+        <img src="/images/slider/formation.jpg" alt="Formation et renforcement des capacités" loading="lazy" width="1920" height="1080">
       </div>
       <div class="ira-slide__scrim" aria-hidden="true"></div>
       <div class="ira-slide__icons" aria-hidden="true">
@@ -82,21 +729,20 @@
       </div>
       <div class="ira-wrap ira-slide__inner">
         <div class="ira-slide__panel">
-          <h2 class="ira-slide__title">Evidence that reaches the desk of decision-makers.</h2>
-          <p class="ira-slide__desc">Policy Research &amp; Applied Econometrics</p>
-          <a href="/services" class="ira-slide__cta">
-            Explore
+          <h2 class="ira-slide__title">Transférer nos méthodes aux équipes de nos partenaires.</h2>
+          <p class="ira-slide__desc">Formation &amp; renforcement des capacités</p>
+          <a href="/expertises/" class="ira-slide__cta">
+            Découvrir
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>
         </div>
       </div>
     </article>
 
-    <!-- SLIDE 4 — CTA -->
-    <article class="ira-slide" role="group" aria-roledescription="slide" aria-label="4 of 4">
+    <!-- SLIDE 4 -->
+    <article class="ira-slide" role="group" aria-roledescription="diapositive" aria-label="4 sur 4">
       <div class="ira-slide__bg">
-        <img src="/assets/hero-4.jpg"
-             alt="Rigorous, independent evidence for Africa" loading="lazy" width="1920" height="1080">
+        <img src="/images/cta.jpg" alt="Des preuves solides pour vos décisions" loading="lazy" width="1920" height="1080">
       </div>
       <div class="ira-slide__scrim" aria-hidden="true"></div>
       <div class="ira-slide__icons" aria-hidden="true">
@@ -108,10 +754,10 @@
       </div>
       <div class="ira-wrap ira-slide__inner">
         <div class="ira-slide__panel">
-          <h2 class="ira-slide__title">Rigorous, independent evidence for Africa's development decisions.</h2>
-          <p class="ira-slide__desc">Pan-African · Independent · Decision-Relevant</p>
-          <a href="/contact" class="ira-slide__cta ira-slide__cta--wide">
-            Start a conversation
+          <h2 class="ira-slide__title">Des preuves solides pour vos décisions qui comptent.</h2>
+          <p class="ira-slide__desc">Une approche rigoureuse pour éclairer chaque choix stratégique</p>
+          <a href="/expertises/" class="ira-slide__cta ira-slide__cta--wide">
+            Découvrir nos expertises
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>
         </div>
@@ -120,52 +766,79 @@
 
   </div>
 
-  <div class="ira-slider__dots" role="tablist" aria-label="Choose slide">
-    <button class="ira-slider__dot is-active" type="button" role="tab" aria-selected="true"  aria-label="Slide 1"></button>
-    <button class="ira-slider__dot"           type="button" role="tab" aria-selected="false" aria-label="Slide 2"></button>
-    <button class="ira-slider__dot"           type="button" role="tab" aria-selected="false" aria-label="Slide 3"></button>
-    <button class="ira-slider__dot"           type="button" role="tab" aria-selected="false" aria-label="Slide 4"></button>
+  <div class="ira-slider__dots" role="tablist" aria-label="Choisir une diapositive">
+    <button class="ira-slider__dot is-active" type="button" role="tab" aria-selected="true"  aria-label="Diapositive 1"></button>
+    <button class="ira-slider__dot"           type="button" role="tab" aria-selected="false" aria-label="Diapositive 2"></button>
+    <button class="ira-slider__dot"           type="button" role="tab" aria-selected="false" aria-label="Diapositive 3"></button>
+    <button class="ira-slider__dot"           type="button" role="tab" aria-selected="false" aria-label="Diapositive 4"></button>
   </div>
 
   <div class="ira-slider__nav">
-    <button class="ira-slider__arrow" type="button" data-slider-prev aria-label="Previous slide">
+    <button class="ira-slider__arrow" type="button" data-slider-prev aria-label="Diapositive précédente">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
     </button>
-    <button class="ira-slider__arrow" type="button" data-slider-next aria-label="Next slide">
+    <button class="ira-slider__arrow" type="button" data-slider-next aria-label="Diapositive suivante">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
     </button>
   </div>
 </section>
 
 <!-- =========================================================
-     INTRO
+     OUVERTURE
      ========================================================= -->
-<section class="ira-intro" id="about">
+<section class="ira-intro" id="a-propos">
   <div class="ira-wrap">
     <div class="ira-intro__inner">
       <p class="ira-intro__text">
-        ADEL partners with <strong>governments, development financiers, NGOs and research institutions</strong>
-        to produce and apply rigorous evidence — impact evaluation, MEL systems,
-        applied econometrics and policy research across 34 African nations.
+        IRA accompagne <strong>institutions publiques, bailleurs de fonds, ONG et entreprises</strong>
+        dans la production et l'usage de preuves rigoureuses : recherche appliquée,
+        évaluation d'impact et conseil stratégique en République Démocratique du Congo
+        et en Afrique centrale.
       </p>
       <div class="ira-intro__cta">
-        <a href="/services" class="ira-btn ira-btn--ghost">Explore our practice areas</a>
+        <a href="/expertises/" class="ira-btn ira-btn--ghost">Découvrir nos expertises</a>
       </div>
     </div>
   </div>
 </section>
 
 <!-- =========================================================
-     WHY ADEL
+     CHIFFRES CLÉS
      ========================================================= -->
-<section class="ira-why" id="why">
+<section class="ira-stats">
+  <div class="ira-wrap">
+    <div class="ira-stats__grid">
+      <div>
+        <p class="ira-stat__num">10<span>+</span></p>
+        <p class="ira-stat__label">Années d'expérience</p>
+      </div>
+      <div>
+        <p class="ira-stat__num">120<span>+</span></p>
+        <p class="ira-stat__label">Mandats réalisés</p>
+      </div>
+      <div>
+        <p class="ira-stat__num">6</p>
+        <p class="ira-stat__label">Pays d'intervention</p>
+      </div>
+      <div>
+        <p class="ira-stat__num">40<span>+</span></p>
+        <p class="ira-stat__label">Chercheurs &amp; évaluateurs</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     POURQUOI IRA
+     ========================================================= -->
+<section class="ira-why" id="pourquoi">
   <div class="ira-wrap">
     <div class="ira-why__head">
-      <p class="ira-eyebrow">Why ADEL</p>
-      <h2 class="ira-title">A pan-African evaluation practice built on rigour.</h2>
+      <p class="ira-eyebrow">Pourquoi IRA</p>
+      <h2 class="ira-title">Une équipe qui conjugue exigence et terrain.</h2>
       <p class="ira-lead">
-        A team combining methodological discipline, deep contextual fluency
-        across the continent, and evidence designed to be used — not just read.
+        Une équipe qui conjugue exigence méthodologique, connaissance du terrain
+        congolais et usage concret de la preuve pour la décision.
       </p>
     </div>
 
@@ -177,8 +850,8 @@
             <polyline points="9 12 11.5 14.5 16 10"/>
           </svg>
         </div>
-        <h3>Methodological rigour</h3>
-        <p>Every study is designed and reviewed against internationally recognised standards of causal inference, measurement and data quality.</p>
+        <h3>Rigueur scientifique</h3>
+        <p>Chaque étude et chaque évaluation est conçue et revue selon des standards méthodologiques exigeants, sous le contrôle d'un Comité Scientifique indépendant.</p>
       </article>
 
       <article class="ira-why__card">
@@ -188,8 +861,8 @@
             <circle cx="12" cy="10" r="2.5"/>
           </svg>
         </div>
-        <h3>Pan-African reach</h3>
-        <p>Active in 34 countries, with field networks, local enumerators and contextual knowledge that no remote team can substitute.</p>
+        <h3>Ancrage local, exigence internationale</h3>
+        <p>Une équipe qui connaît le contexte institutionnel congolais et régional, formée aux méthodes les plus reconnues d'évaluation d'impact.</p>
       </article>
 
       <article class="ira-why__card">
@@ -198,8 +871,8 @@
             <polyline points="13 2 4 14 12 14 11 22 20 10 12 10 13 2"/>
           </svg>
         </div>
-        <h3>Independent &amp; accountable</h3>
-        <p>We work free from implementing interests. Findings are published, methods are documented, and estimates are replicable.</p>
+        <h3>Une structure agile</h3>
+        <p>Des délais de mobilisation courts et une capacité à s'adapter à la taille et au budget de chaque mandat, sans compromis sur la qualité.</p>
       </article>
 
       <article class="ira-why__card">
@@ -209,33 +882,33 @@
             <polyline points="7 15 11 10 15 13 20 6"/>
           </svg>
         </div>
-        <h3>From evidence to decision</h3>
-        <p>Deliverables are designed to be used: operational recommendations, decision briefs and restitutions tailored to each audience.</p>
+        <h3>De la preuve à la décision</h3>
+        <p>Nos livrables sont conçus pour être utilisés, pas seulement lus : recommandations opérationnelles, restitutions adaptées à chaque partie prenante.</p>
       </article>
     </div>
   </div>
 </section>
 
 <!-- =========================================================
-     EXPERTISE
+     EXPERTISES
      ========================================================= -->
-<section class="ira-expertise" id="services">
+<section class="ira-expertise" id="expertises">
   <div class="ira-wrap">
 
     <figure class="ira-expertise__figure">
-      <img src="/assets/fieldwork.jpg"
-           alt="ADEL research team at work"
+      <img src="/images/women-working.jpg"
+           alt="Équipe IRA au travail"
            loading="lazy"
            width="1920" height="1080">
     </figure>
 
     <div class="ira-expertise__head">
       <div>
-        <p class="ira-eyebrow">What we do</p>
-        <h2 class="ira-title" style="margin-bottom:0;">Five practice areas,<br>one standard of rigour.</h2>
+        <p class="ira-eyebrow">Nos expertises</p>
+        <h2 class="ira-title" style="margin-bottom:0;">Cinq savoir-faire,<br>une même exigence.</h2>
       </div>
-      <a href="/services" class="ira-btn ira-btn--ghost">
-        See all services
+      <a href="/expertises/" class="ira-btn ira-btn--ghost">
+        Voir la page Services
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </a>
     </div>
@@ -244,40 +917,40 @@
       <div class="ira-exp-item">
         <span class="ira-exp-item__num">01</span>
         <div class="ira-exp-item__body">
-          <h3>Impact evaluation &amp; counterfactual design</h3>
-          <p>RCTs, quasi-experimental designs and portfolio-level impact assessments.</p>
+          <h3>Recherche appliquée &amp; analyse socio-économique</h3>
+          <p>Comprendre une réalité sociale ou économique pour éclairer une décision.</p>
         </div>
       </div>
 
       <div class="ira-exp-item">
         <span class="ira-exp-item__num">02</span>
         <div class="ira-exp-item__body">
-          <h3>MEL systems design</h3>
-          <p>Theories of change, indicator frameworks and data systems that endure.</p>
+          <h3>Évaluation d'impact &amp; suivi-évaluation</h3>
+          <p>Mesurer ce qui fonctionne réellement, et pourquoi.</p>
         </div>
       </div>
 
       <div class="ira-exp-item">
         <span class="ira-exp-item__num">03</span>
         <div class="ira-exp-item__body">
-          <h3>Applied econometrics &amp; analytics</h3>
-          <p>Survey data, administrative records and satellite data, analysed to standard.</p>
+          <h3>Conseil stratégique &amp; institutionnel</h3>
+          <p>Transformer les constats en choix stratégiques et en plans d'action.</p>
         </div>
       </div>
 
       <div class="ira-exp-item">
         <span class="ira-exp-item__num">04</span>
         <div class="ira-exp-item__body">
-          <h3>Policy research &amp; strategic review</h3>
-          <p>Decision-relevant evidence for ministries, donors and programme designers.</p>
+          <h3>Data, collecte &amp; outils numériques</h3>
+          <p>Des données fiables, de la collecte de terrain au tableau de bord.</p>
         </div>
       </div>
 
       <div class="ira-exp-item">
         <span class="ira-exp-item__num">05</span>
         <div class="ira-exp-item__body">
-          <h3>Field surveys &amp; CAPI</h3>
-          <p>Reliable data from the ground up — sampling, enumeration and quality control.</p>
+          <h3>Formation &amp; renforcement des capacités</h3>
+          <p>Transférer nos méthodes aux équipes de nos partenaires.</p>
         </div>
       </div>
     </div>
@@ -286,15 +959,15 @@
 </section>
 
 <!-- =========================================================
-     APPROACH
+     APPROCHE
      ========================================================= -->
-<section class="ira-approach" id="approach">
+<section class="ira-approach" id="approche">
   <div class="ira-wrap ira-approach__inner">
-    <p class="ira-eyebrow">Our approach</p>
-    <h2 class="ira-title">Three principles, one purpose.</h2>
+    <p class="ira-eyebrow">Notre approche</p>
+    <h2 class="ira-title">Trois principes, une seule finalité.</h2>
     <p class="ira-lead">
-      A consistent way of working across every mandate — so that evidence
-      genuinely serves the decision it was commissioned for.
+      Une manière de travailler constante, quel que soit le mandat,
+      pour que la preuve serve réellement la décision.
     </p>
 
     <div class="ira-approach__grid">
@@ -306,7 +979,7 @@
           </svg>
         </div>
         <h3>Evidence</h3>
-        <p>Methodological rigour before any conclusion is drawn.</p>
+        <p>La rigueur méthodologique avant toute conclusion.</p>
       </article>
 
       <article class="ira-approach__card">
@@ -317,8 +990,8 @@
             <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
           </svg>
         </div>
-        <h3>Independence</h3>
-        <p>Findings free from implementing interests, published and replicable.</p>
+        <h3>Impact</h3>
+        <p>Des recommandations conçues pour produire un changement mesurable.</p>
       </article>
 
       <article class="ira-approach__card">
@@ -329,13 +1002,13 @@
             <path d="M12 3a6 6 0 0 0-4 10.5c.7.8 1 1.6 1 2.5h6c0-.9.3-1.7 1-2.5A6 6 0 0 0 12 3z"/>
           </svg>
         </div>
-        <h3>Use</h3>
-        <p>Evidence designed for the desk, the budget line and the policy window.</p>
+        <h3>Better Decisions</h3>
+        <p>La donnée mise directement au service de vos décisions.</p>
       </article>
     </div>
 
-    <a href="/methodology" class="ira-approach__link">
-      Learn more about our methodology
+    <a href="/methodologie" class="ira-approach__link">
+      En savoir plus sur notre méthodologie
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <line x1="5" y1="12" x2="19" y2="12"/>
         <polyline points="12 5 19 12 12 19"/>
@@ -345,30 +1018,31 @@
 </section>
 
 <!-- =========================================================
-     FINAL CTA
+     APPEL FINAL
      ========================================================= -->
 <section class="ira-final" id="contact">
   <div class="ira-wrap">
     <div class="ira-final__inner">
-      <h2>A study to scope, a programme to evaluate, a strategy to inform?</h2>
+      <p class="ira-eyebrow">Parlons de votre besoin</p>
+      <h2>Une décision à préparer, un programme à évaluer, une stratégie à éclairer&nbsp;?</h2>
       <p>
-        Tell us what you are trying to learn. We will propose — with no obligation —
-        a first conversation to shape the right approach together.
+        Parlons de votre besoin — nous vous proposons, sans engagement,
+        un premier échange pour cadrer ensemble la meilleure approche.
       </p>
-      <a href="/contact" class="ira-btn ira-btn--light">
-        Start a conversation
+      <a href="/consultations" class="ira-btn ira-btn--primary">
+        Prendre contact
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </a>
     </div>
   </div>
 </section>
 
-<!-- FOOTER (injected) -->
+<!-- FOOTER -->
 <div id="site-footer"></div>
 
 <script>
 /* =========================================================
-   INJECT HEADER + FOOTER
+   INJECTION HEADER + FOOTER
    ========================================================= */
 document.addEventListener("DOMContentLoaded", function () {
   fetch("/components/header.html")
@@ -383,7 +1057,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /* =========================================================
-   HERO SLIDER
+   SLIDER HERO
    ========================================================= */
 (function () {
   var slider = document.querySelector(".ira-slider");
