@@ -7,6 +7,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://images.pexels.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Playball&family=Lexend:wght@100..900&display=swap" rel="stylesheet">
 
 <style>
@@ -32,6 +33,7 @@ html { scroll-behavior: smooth; }
 
 body{
   margin: 0;
+  overflow-x: clip;
   background: var(--ira-bg);
   color: var(--ira-ink);
   font-family: "Lexend", "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -60,14 +62,14 @@ a   { color: inherit; text-decoration: none; }
   margin-inline: auto;
 }
 
-/* ---------- ancrages (compensation header fixe) ---------- */
+/* ---------- ancrages ---------- */
 #notre-histoire,
 #mission,
 #vision,
 #nos-valeurs,
 #ce-qui-nous-distingue,
 #contact{
-  scroll-margin-top: 100px; /* header 82px + marge */
+  scroll-margin-top: 100px;
 }
 
 /* ---------- boutons ---------- */
@@ -117,7 +119,7 @@ a   { color: inherit; text-decoration: none; }
   margin: 0;
 }
 
-/* ---------- eyebrow (hero uniquement) ---------- */
+/* ---------- eyebrow ---------- */
 .ira-eyebrow{
   display: inline-flex;
   align-items: center;
@@ -138,7 +140,7 @@ a   { color: inherit; text-decoration: none; }
   display: block;
 }
 
-/* ---------- trait de section (repère vert avant chaque titre) ---------- */
+/* ---------- trait de section ---------- */
 .ira-section-line{
   display: block;
   width: 44px;
@@ -146,6 +148,20 @@ a   { color: inherit; text-decoration: none; }
   background: var(--green);
   border-radius: 2px;
   margin: 0 0 1.4rem;
+}
+
+/* ---------- image générique ---------- */
+.ira-media{
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--ira-radius);
+  background: #e9e4db;
+}
+.ira-media img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* =========================================================
@@ -156,7 +172,13 @@ a   { color: inherit; text-decoration: none; }
   padding: clamp(56px, 8vw, 110px) 0 clamp(56px, 8vw, 100px);
   border-bottom: 1px solid var(--ira-line);
 }
-.ira-pagehero__inner{ max-width: 900px; }
+
+.ira-pagehero__grid{
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: clamp(2.2rem, 5vw, 4.5rem);
+  align-items: center;
+}
 
 .ira-pagehero__title{
   font-family: "Lexend", sans-serif;
@@ -178,6 +200,42 @@ a   { color: inherit; text-decoration: none; }
 .ira-pagehero__lead:last-child{ margin-bottom: 0; }
 .ira-pagehero__lead strong{ font-weight: 500; color: var(--green); }
 
+.ira-pagehero__media{
+  position: relative;
+  margin: 0;
+}
+.ira-pagehero__media::before{
+  content: "";
+  position: absolute;
+  top: -18px;
+  left: -18px;
+  width: 130px;
+  height: 130px;
+  border-radius: var(--ira-radius);
+  background: var(--green);
+  opacity: .13;
+  z-index: 0;
+}
+.ira-pagehero__media img{
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--ira-radius);
+  box-shadow: 0 34px 60px -34px rgba(15,30,61,.5);
+}
+.ira-pagehero__caption{
+  position: relative;
+  z-index: 1;
+  font-family: "Lexend", sans-serif;
+  font-size: .78rem;
+  font-weight: 300;
+  letter-spacing: .02em;
+  color: var(--ira-muted);
+  margin: .9rem 0 0;
+}
+
 /* =========================================================
    NOTRE HISTOIRE
    ========================================================= */
@@ -185,12 +243,24 @@ a   { color: inherit; text-decoration: none; }
   background: var(--ira-bg);
   padding: clamp(70px, 10vw, 130px) 0;
 }
-.ira-story__inner{ max-width: 780px; margin-inline: auto; }
+.ira-story__grid{
+  display: grid;
+  grid-template-columns: .85fr 1.15fr;
+  gap: clamp(2rem, 5vw, 4.2rem);
+  align-items: center;
+}
+.ira-story__media img{
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: var(--ira-radius);
+  box-shadow: 0 30px 55px -34px rgba(15,30,61,.45);
+}
 .ira-story__text{
   font-family: "Lexend", sans-serif;
   font-size: 1.05rem;
   font-weight: 300;
-  line-height: 1.7;
+  line-height: 1.75;
   color: var(--ira-ink);
   margin: 0 0 1.3rem;
 }
@@ -342,7 +412,7 @@ a   { color: inherit; text-decoration: none; }
 }
 
 /* =========================================================
-   BANDEAU — TROIS REPÈRES
+   BANDEAU — TROIS REPÈRES (sans photo)
    ========================================================= */
 .ira-figures{
   background: var(--night);
@@ -388,7 +458,7 @@ a   { color: inherit; text-decoration: none; }
 }
 
 /* =========================================================
-   APPEL FINAL
+   APPEL FINAL (sans photo)
    ========================================================= */
 .ira-final{
   background: var(--green);
@@ -425,6 +495,17 @@ a   { color: inherit; text-decoration: none; }
   .ira-distinguish__grid{ grid-template-columns: 1fr; gap: 1.2rem; }
 }
 
+@media (max-width: 900px){
+  .ira-pagehero__grid{ grid-template-columns: 1fr; gap: 3rem; }
+  .ira-pagehero__media::before{ top: -12px; left: -12px; width: 90px; height: 90px; }
+  .ira-pagehero__media img{ aspect-ratio: 16 / 10; }
+}
+
+@media (max-width: 860px){
+  .ira-story__grid{ grid-template-columns: 1fr; gap: 2.4rem; }
+  .ira-story__media img{ aspect-ratio: 16 / 10; }
+}
+
 @media (max-width: 820px){
   .ira-mv__grid{ grid-template-columns: 1fr; }
   .ira-value{ grid-template-columns: 1fr; gap: .7rem; padding: 1.6rem 0; }
@@ -450,6 +531,11 @@ a   { color: inherit; text-decoration: none; }
     border-top: 1px solid rgba(255,255,255,.14);
   }
 }
+
+@media (prefers-reduced-motion: reduce){
+  *{ transition: none !important; animation: none !important; }
+  html{ scroll-behavior: auto; }
+}
 </style>
 </head>
 
@@ -463,50 +549,78 @@ a   { color: inherit; text-decoration: none; }
      ========================================================= -->
 <section class="ira-pagehero">
   <div class="ira-wrap">
-    <div class="ira-pagehero__inner">
-      <p class="ira-eyebrow">À propos</p>
-      <h1 class="ira-pagehero__title">Transformer les données<br>en décisions.</h1>
-      <p class="ira-pagehero__lead">
-        Impact Research &amp; Advisory (IRA) est un cabinet de conseil spécialisé dans la
-        recherche appliquée, le suivi-évaluation, l'analyse des politiques publiques et
-        l'amélioration de la performance des programmes de développement et humanitaires.
-      </p>
-      <p class="ira-pagehero__lead">
-        Nous accompagnons les <strong>ONG, agences des Nations Unies, bailleurs, institutions
-        publiques, organisations internationales et acteurs privés</strong> dans la production
-        et l'utilisation d'évidences fiables.
-      </p>
+    <div class="ira-pagehero__grid">
+
+      <div class="ira-pagehero__inner">
+        <p class="ira-eyebrow">À propos</p>
+        <h1 class="ira-pagehero__title">Transformer les données<br>en décisions.</h1>
+        <p class="ira-pagehero__lead">
+          Impact Research &amp; Advisory (IRA) est un cabinet de conseil spécialisé dans la
+          recherche appliquée, le suivi-évaluation, l'analyse des politiques publiques et
+          l'amélioration de la performance des programmes de développement et humanitaires.
+        </p>
+        <p class="ira-pagehero__lead">
+          Nous accompagnons les <strong>ONG, agences des Nations Unies, bailleurs, institutions
+          publiques, organisations internationales et acteurs privés</strong> dans la production
+          et l'utilisation d'évidences fiables.
+        </p>
+      </div>
+
+      <figure class="ira-pagehero__media">
+        <!-- Image Pexels — deux professionnelles africaines -->
+        <img
+          src="https://images.pexels.com/photos/1181712/pexels-photo-1181712.jpeg?auto=compress&cs=tinysrgb&w=1200"
+          alt="Deux professionnelles africaines échangeant dans un bureau moderne"
+          width="1200" height="900" fetchpriority="high" decoding="async">
+        <figcaption class="ira-pagehero__caption">
+          Des équipes engagées, des décisions fondées sur la preuve.
+        </figcaption>
+      </figure>
+
     </div>
   </div>
 </section>
 
 <!-- =========================================================
-     NOTRE HISTOIRE  →  #notre-histoire
+     NOTRE HISTOIRE
      ========================================================= -->
 <section class="ira-story" id="notre-histoire">
   <div class="ira-wrap">
-    <div class="ira-story__inner">
+    <div class="ira-story__grid">
 
-      <span class="ira-section-line" aria-hidden="true"></span>
-      <h2 class="ira-title">D'où vient IRA</h2>
+      <figure class="ira-story__media ira-media">
+        <!-- Image Pexels — deux femmes africaines devant un ordinateur -->
+        <img
+          src="https://images.pexels.com/photos/1181519/pexels-photo-1181519.jpeg?auto=compress&cs=tinysrgb&w=1000"
+          alt="Deux femmes africaines travaillant ensemble sur un ordinateur portable"
+          width="1000" height="1250" loading="lazy" decoding="async">
+      </figure>
 
-      <p class="ira-story__text">
-        IRA est né d’un constat simple : en République démocratique du Congo et en Afrique
-        centrale, trop de décisions publiques et de programmes de développement reposent
-        encore sur des intuitions, des données fragmentées ou des rapports jamais utilisés.
-        Des chercheurs, évaluateurs et praticiens du développement ont voulu changer cela.
-        Ils ont créé IRA pour offrir un espace où la rigueur méthodologique rencontre
-        l’exigence du terrain, où chaque étude est conçue pour éclairer une décision réelle.
-        L’ambition : bâtir un cabinet de référence, enraciné localement, dont les preuves
-        servent concrètement l’action publique et le changement.
-      </p>
+      <div class="ira-story__body">
+        <span class="ira-section-line" aria-hidden="true"></span>
+        <h2 class="ira-title">D'où vient IRA</h2>
+
+        <p class="ira-story__text">
+          IRA est né d’un constat simple : en République démocratique du Congo et en Afrique
+          centrale, trop de décisions publiques et de programmes de développement reposent
+          encore sur des intuitions, des données fragmentées ou des rapports jamais utilisés.
+        </p>
+
+        <p class="ira-story__text">
+          Des chercheurs, évaluateurs et praticiens du développement ont voulu changer cela.
+          Ils ont créé IRA pour offrir un espace où la rigueur méthodologique rencontre
+          l’exigence du terrain, où chaque étude est conçue pour éclairer une décision réelle.
+          L’ambition : bâtir un cabinet de référence, enraciné localement, dont les preuves
+          servent concrètement l’action publique et le changement.
+        </p>
+      </div>
 
     </div>
   </div>
 </section>
 
 <!-- =========================================================
-     MISSION & VISION  →  #mission  /  #vision
+     MISSION & VISION
      ========================================================= -->
 <section class="ira-mv" id="mission-vision">
   <div class="ira-wrap">
@@ -516,7 +630,6 @@ a   { color: inherit; text-decoration: none; }
 
     <div class="ira-mv__grid">
 
-      <!-- MISSION → #mission -->
       <article class="ira-mv__card" id="mission">
         <h3>Éclairer les décisions par la preuve</h3>
         <p>
@@ -527,7 +640,6 @@ a   { color: inherit; text-decoration: none; }
         </p>
       </article>
 
-      <!-- VISION → #vision -->
       <article class="ira-mv__card" id="vision">
         <h3>Une référence en Afrique centrale</h3>
         <p>
@@ -543,7 +655,7 @@ a   { color: inherit; text-decoration: none; }
 </section>
 
 <!-- =========================================================
-     NOS VALEURS  →  #nos-valeurs
+     NOS VALEURS
      ========================================================= -->
 <section class="ira-values" id="nos-valeurs">
   <div class="ira-wrap">
@@ -681,7 +793,7 @@ a   { color: inherit; text-decoration: none; }
       </p>
       <a href="/consultations" class="ira-btn ira-btn--light">
         Prendre contact
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </a>
     </div>
   </div>
@@ -691,7 +803,6 @@ a   { color: inherit; text-decoration: none; }
 <div id="site-footer"></div>
 
 <script>
-  /* Injection header + footer */
   document.addEventListener("DOMContentLoaded", function () {
     fetch("/components/header.html")
       .then(function (r) { return r.ok ? r.text() : ""; })
@@ -705,5 +816,6 @@ a   { color: inherit; text-decoration: none; }
   });
 </script>
 
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"6f893744bf8e47bcbbe99f556b4b2898","r":1,"spa":2}' crossorigin="anonymous"></script>
 </body>
 </html>
