@@ -204,16 +204,16 @@ h1, h2, h3, h4, .display {
   to   { transform: scale(1); }
 }
 
-/* Dégradé bleu renforcé pour une meilleure lisibilité du texte */
+/* Dégradé bleu élargi presque jusqu'au milieu */
 .ira-slide__scrim{
   position: absolute; inset: 0 auto 0 0;
-  width: min(68%, 820px);
+  width: min(52%, 680px);
   pointer-events: none; z-index: 1;
   background: linear-gradient(
     90deg,
     rgba(11, 21, 48, .98) 0%,
-    rgba(11, 21, 48, .92) 40%,
-    rgba(11, 21, 48, .62) 72%,
+    rgba(11, 21, 48, .92) 35%,
+    rgba(11, 21, 48, .55) 75%,
     rgba(11, 21, 48, 0)  100%
   );
 }
@@ -501,7 +501,7 @@ h1, h2, h3, h4, .display {
 @media (max-width: 1024px){ .ira-why__grid{ grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 560px){ .ira-why__grid{ grid-template-columns: 1fr; gap: 1.2rem; } }
 
-/* Section expertises : image en fond, faible opacité */
+/* Section expertises : image en fond, opacité 30% */
 .ira-expertise{
   position: relative;
   background: #fff;
@@ -518,7 +518,7 @@ h1, h2, h3, h4, .display {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: .08;
+  opacity: .30;
   z-index: -1;
   pointer-events: none;
 }
@@ -541,7 +541,7 @@ h1, h2, h3, h4, .display {
   padding: 1.6rem 1.7rem;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: rgba(250, 246, 238, .92);
+  background: rgba(250, 246, 238, .96);
   transition: border-color .35s ease, transform .5s var(--ease-out), background .35s ease, box-shadow .5s var(--ease-out);
 }
 .ira-exp-item::before{
