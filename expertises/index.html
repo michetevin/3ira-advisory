@@ -76,7 +76,7 @@ a   { color: inherit; text-decoration: none; }
 }
 
 /* =========================================================
-   BOUTONS
+   BOUTON — SEUL ÉLÉMENT INTERACTIF
    ========================================================= */
 .ira-btn{
   position: relative;
@@ -107,13 +107,8 @@ a   { color: inherit; text-decoration: none; }
 }
 
 /* =========================================================
-   SECTION EXPERTISES — GRANDES CARTES
+   LABEL DE SECTION
    ========================================================= */
-.ira-expertises{
-  padding: clamp(72px, 9vw, 128px) 0 clamp(96px, 11vw, 160px);
-  background: var(--ira-bg);
-}
-
 .ira-section-label{
   display: inline-flex;
   align-items: center;
@@ -132,7 +127,14 @@ a   { color: inherit; text-decoration: none; }
   display: block;
 }
 
-/* 2 colonnes larges max — sections plus amples */
+/* =========================================================
+   SECTION EXPERTISES — GRANDES CARTES
+   ========================================================= */
+.ira-expertises{
+  padding: clamp(72px, 9vw, 128px) 0 clamp(96px, 11vw, 160px);
+  background: var(--ira-bg);
+}
+
 .ira-expertises__grid{
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -150,20 +152,11 @@ a   { color: inherit; text-decoration: none; }
   overflow: hidden;
   opacity: 0;
   transform: translateY(34px);
-  transition: opacity .9s var(--ease), transform .9s var(--ease),
-              border-color .35s var(--ease), box-shadow .55s var(--ease);
+  transition: opacity .9s var(--ease), transform .9s var(--ease);
   will-change: opacity, transform;
 }
-.ira-card.is-inview{
-  opacity: 1;
-  transform: none;
-}
-.ira-card:hover{
-  border-color: rgba(44,122,62,.45);
-  box-shadow: 0 46px 100px -50px rgba(15,30,61,.55);
-}
+.ira-card.is-inview{ opacity: 1; transform: none; }
 
-/* ---------- MÉDIA (plus haut) ---------- */
 .ira-card__media{
   position: relative;
   aspect-ratio: 16 / 9;
@@ -173,26 +166,15 @@ a   { color: inherit; text-decoration: none; }
 .ira-card__media img{
   width: 100%; height: 100%;
   object-fit: cover;
-  transform: scale(1.08);
-  transition: transform 1.6s var(--ease), filter .55s var(--ease);
-  filter: saturate(.95);
-}
-.ira-card:hover .ira-card__media img{
-  transform: scale(1.14);
-  filter: saturate(1.05);
 }
 .ira-card__media::after{
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(15,30,61,.6), transparent 55%);
-  opacity: .8;
-  transition: opacity .5s var(--ease);
+  background: linear-gradient(to top, rgba(15,30,61,.55), transparent 55%);
   pointer-events: none;
 }
-.ira-card:hover .ira-card__media::after{ opacity: 1; }
 
-/* numéro en haut à droite de l’image */
 .ira-card__num{
   position: absolute;
   top: 1.3rem; right: 1.3rem;
@@ -210,7 +192,6 @@ a   { color: inherit; text-decoration: none; }
   font-variant-numeric: tabular-nums;
 }
 
-/* ---------- CORPS DE CARTE (plus d’air) ---------- */
 .ira-card__body{
   position: relative;
   display: flex;
@@ -220,7 +201,6 @@ a   { color: inherit; text-decoration: none; }
   flex: 1;
 }
 
-/* ---------- BADGE ICÔNE (chevauchement) ---------- */
 .ira-card__icon{
   position: absolute;
   top: -30px;
@@ -236,21 +216,9 @@ a   { color: inherit; text-decoration: none; }
   color: var(--green);
   border: 1px solid var(--ira-line);
   box-shadow: 0 22px 50px -24px rgba(15,30,61,.5);
-  transition: background .4s var(--ease), color .4s var(--ease),
-              transform .55s var(--ease), border-color .4s var(--ease);
 }
-.ira-card__icon svg{
-  width: 28px;
-  height: 28px;
-}
-.ira-card:hover .ira-card__icon{
-  background: var(--green);
-  color: #fff;
-  border-color: var(--green);
-  transform: rotate(-5deg) scale(1.06);
-}
+.ira-card__icon svg{ width: 28px; height: 28px; }
 
-/* ---------- TITRE + DESCRIPTION (plus grands) ---------- */
 .ira-card__title{
   font-family: "Lexend", sans-serif;
   font-size: clamp(1.35rem, 1.7vw, 1.65rem);
@@ -269,7 +237,6 @@ a   { color: inherit; text-decoration: none; }
   margin: 0;
 }
 
-/* ---------- LISTE À ICÔNES (plus aérée) ---------- */
 .ira-card__list{
   list-style: none;
   margin: auto 0 0 0;
@@ -287,9 +254,7 @@ a   { color: inherit; text-decoration: none; }
   font-weight: 300;
   line-height: 1.6;
   color: var(--ira-muted);
-  transition: color .3s var(--ease);
 }
-.ira-card__list li:hover{ color: var(--ira-ink); }
 
 .ira-card__check{
   flex-shrink: 0;
@@ -300,12 +265,92 @@ a   { color: inherit; text-decoration: none; }
   border-radius: 50%;
   background: rgba(44,122,62,.12);
   color: var(--green);
-  transition: background .3s var(--ease), color .3s var(--ease), transform .35s var(--ease);
 }
-.ira-card__list li:hover .ira-card__check{
-  background: var(--green);
-  color: #fff;
-  transform: scale(1.08);
+
+/* =========================================================
+   SECTION SECTEURS — BANDEAU HORIZONTAL
+   ========================================================= */
+.ira-sectors{
+  background: var(--ira-bg-alt);
+  border-top: 1px solid var(--ira-line);
+  padding: clamp(64px, 8vw, 112px) 0 clamp(72px, 9vw, 128px);
+  overflow: hidden;
+}
+.ira-sectors .ira-section-label{ margin-bottom: 2.5rem; }
+
+/* ---------- BANDEAU DÉFILANT ---------- */
+.ira-sectors__track{
+  position: relative;
+  margin-inline: calc(50% - 50vw);
+  padding-inline: max(24px, calc(50vw - var(--ira-max) / 2 + 24px));
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: max(24px, calc(50vw - var(--ira-max) / 2 + 24px));
+  scrollbar-width: thin;
+  scrollbar-color: var(--ira-line) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+.ira-sectors__track::-webkit-scrollbar{ height: 6px; }
+.ira-sectors__track::-webkit-scrollbar-thumb{
+  background: var(--ira-line);
+  border-radius: 999px;
+}
+.ira-sectors__track::-webkit-scrollbar-track{ background: transparent; }
+
+.ira-sectors__list{
+  list-style: none;
+  margin: 0;
+  padding: .5rem 0 1.6rem;
+  display: flex;
+  gap: 1rem;
+  width: max-content;
+}
+
+/* ---------- CARTE SECTEUR (compacte, statique) ---------- */
+.ira-sector{
+  flex: 0 0 auto;
+  width: 210px;
+  min-height: 168px;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  padding: 1.5rem 1.3rem 1.35rem;
+  background: var(--ira-bg);
+  border: 1px solid var(--ira-line);
+  border-radius: 12px;
+}
+
+.ira-sector__icon{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: rgba(44,122,62,.10);
+  color: var(--green);
+  border: 1px solid rgba(44,122,62,.18);
+}
+.ira-sector__icon svg{ width: 22px; height: 22px; }
+
+.ira-sector__label{
+  font-size: .95rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--night);
+  letter-spacing: -.005em;
+  margin: 0;
+}
+
+.ira-sector__num{
+  margin-top: auto;
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .22em;
+  color: var(--ira-muted);
+  font-variant-numeric: tabular-nums;
 }
 
 /* =========================================================
@@ -377,9 +422,7 @@ a   { color: inherit; text-decoration: none; }
     grid-template-columns: 1fr;
     gap: 1.6rem;
   }
-  .ira-card__body{
-    padding: 2.8rem 1.6rem 1.8rem;
-  }
+  .ira-card__body{ padding: 2.8rem 1.6rem 1.8rem; }
   .ira-card__icon{
     left: 1.6rem;
     width: 56px;
@@ -399,7 +442,6 @@ a   { color: inherit; text-decoration: none; }
     transition-duration: .001ms !important;
   }
   .ira-card,
-  .ira-card__media img,
   .ira-final .ira-reveal{
     opacity: 1 !important;
     transform: none !important;
@@ -436,7 +478,6 @@ a   { color: inherit; text-decoration: none; }
                loading="lazy" decoding="async">
           <span class="ira-card__num">01</span>
         </div>
-
         <div class="ira-card__body">
           <span class="ira-card__icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -492,7 +533,6 @@ a   { color: inherit; text-decoration: none; }
                loading="lazy" decoding="async">
           <span class="ira-card__num">02</span>
         </div>
-
         <div class="ira-card__body">
           <span class="ira-card__icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -547,7 +587,6 @@ a   { color: inherit; text-decoration: none; }
                loading="lazy" decoding="async">
           <span class="ira-card__num">03</span>
         </div>
-
         <div class="ira-card__body">
           <span class="ira-card__icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -604,7 +643,6 @@ a   { color: inherit; text-decoration: none; }
                loading="lazy" decoding="async">
           <span class="ira-card__num">04</span>
         </div>
-
         <div class="ira-card__body">
           <span class="ira-card__icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -659,7 +697,6 @@ a   { color: inherit; text-decoration: none; }
                loading="lazy" decoding="async">
           <span class="ira-card__num">05</span>
         </div>
-
         <div class="ira-card__body">
           <span class="ira-card__icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -708,6 +745,175 @@ a   { color: inherit; text-decoration: none; }
       </article>
 
     </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     SECTEURS D'INTERVENTION — BANDEAU HORIZONTAL
+     ========================================================= -->
+<section class="ira-sectors" aria-labelledby="ira-sectors-title">
+  <div class="ira-wrap">
+    <p class="ira-section-label" id="ira-sectors-title">Secteurs d'intervention</p>
+  </div>
+
+  <div class="ira-sectors__track" tabindex="0" aria-label="Liste défilante des secteurs d'intervention">
+    <ul class="ira-sectors__list">
+
+      <!-- 01 — Agriculture -->
+      <li class="ira-sector">
+        <span class="ira-sector__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 20h10"/>
+            <path d="M12 20V10"/>
+            <path d="M12 10c0-3 2-6 6-6 0 3-2 6-6 6z"/>
+            <path d="M12 14c0-3-2-6-6-6 0 3 2 6 6 6z"/>
+          </svg>
+        </span>
+        <p class="ira-sector__label">Agriculture &amp; sécurité alimentaire</p>
+        <span class="ira-sector__num">01</span>
+      </li>
+
+      <!-- 02 — Santé -->
+      <li class="ira-sector">
+        <span class="ira-sector__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0L12 5.35l-.77-.77a5.4 5.4 0 1 0-7.65 7.65l.77.77L12 21.35l7.65-8.35.77-.77a5.4 5.4 0 0 0 0-7.65z"/>
+          </svg>
+        </span>
+        <p class="ira-sector__label">Santé publique</p>
+        <span class="ira-sector__num">02</span>
+      </li>
+
+      <!-- 03 — Éducation -->
+      <li class="ira-sector">
+        <span class="ira-sector__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/>
+            <path d="M22 10v6"/>
+            <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/>
+          </svg>
+        </span>
+        <p class="ira-sector__label">Éducation &amp; formation</p>
+        <span class="ira-sector__num">03</span>
+      </li>
+
+      <!-- 04 — Gouvernance -->
+      <li class="ira-sector">
+        <span class="ira-sector__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="22" x2="21" y2="22"/>
+            <line x1="6" y1="18" x2="6" y2="11"/>
+            <line x1="10" y1="18" x2="10" y2="11"/>
+            <line x1="14" y1="18" x2="14" y2="11"/>
+            <line x1="18" y1="18" x2="18" y2="11"/>
+            <polygon points="12 2 20 7 4 7"/>
+          </svg>
+        </span>
+        <p class="ira-sector__label">Gouvernance &amp; redevabilité</p>
+        <span class="ira-sector__num">04</span>
+      </li>
+
+      <!-- 05 — Environnement -->
+      <li class="ira-sector">
+        <span class="ira-sector__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+            <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+          </svg>
+        </span>
+        <p class="ira-sector__label">Environnement &amp; climat</p>
+        <span class="ira-sector__num">05</span>
+      </li>
+
+      <!-- 06 — Mines -->
+      <li class="ira-sector">
+        <span class="ira-sector__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.531 12.469 6.619 20.38a1 1 0 1 1-3-3l7.912-7.912"/>
+            <path d="M15.686 4.314A12.5 12.5 0 0 0 5.461 2.958 1 1 0 0 0 5.58 4.71a22 22 0 0 1 6.318 3.393"/>
+            <path d="M17.7 3.7a1 1 0 0 0-1.4 0l-4.6 4.6a1 1 0 0 0 0 1.4l2.6 2.6a1 1 0 0 0 1.4 0l4.6-4.6a1 1 0 0 0 0-1.4z"/>
+            <path d="M2 22 12 12"/>
+          </svg>
+        </span>
+        <p class="ira-sector__label">Mines &amp; ressources naturelles</p>
+        <span class="ira-sector__num">06</span>
+      </li>
+
+      <!-- 07 — Action humanitaire -->
+      <li class="ira-sector">
+        <span class="ira-sector__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 14h2a2 2 0 0 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 16"/>
+            <path d="m7 20 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"/>
+            <path d="m2 15 6 6"/>
+            <path d="M19.5 8.5c.7-.7 1.5-1.6 1.5-2.7A2.73 2.73 0 0 0 16 4a2.78 2.78 0 0 0-5 1.8c0 1.2.8 2 1.5 2.8L16 12Z"/>
+          </svg>
+        </span>
+        <p class="ira-sector__label">Action humanitaire &amp; paix</p>
+        <span class="ira-sector__num">07</span>
+      </li>
+
+      <!-- 08 — Protection sociale -->
+      <li class="ira-sector">
+        <span class="ira-sector__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </span>
+        <p class="ira-sector__label">Protection sociale &amp; genre</p>
+        <span class="ira-sector__num">08</span>
+      </li>
+
+      <!-- 09 — WASH -->
+      <li class="ira-sector">
+        <span class="ira-sector__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>
+          </svg>
+        </span>
+        <p class="ira-sector__label">Eau, hygiène &amp; assainissement</p>
+        <span class="ira-sector__num">09</span>
+      </li>
+
+      <!-- 10 — Développement économique -->
+      <li class="ira-sector">
+        <span class="ira-sector__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+            <polyline points="16 7 22 7 22 13"/>
+          </svg>
+        </span>
+        <p class="ira-sector__label">Développement économique &amp; emploi</p>
+        <span class="ira-sector__num">10</span>
+      </li>
+
+      <!-- 11 — Population -->
+      <li class="ira-sector">
+        <span class="ira-sector__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="10" r="3"/>
+            <path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 7 8 11.7z"/>
+          </svg>
+        </span>
+        <p class="ira-sector__label">Population &amp; urbanisation</p>
+        <span class="ira-sector__num">11</span>
+      </li>
+
+    </ul>
   </div>
 </section>
 
