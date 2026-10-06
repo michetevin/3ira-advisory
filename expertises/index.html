@@ -25,8 +25,8 @@
   --night:       #0f1e3d;
   --ira-muted:   #5b6472;
   --ira-line:    #e6e1d8;
-  --ira-radius:  8px;
-  --ira-max:     1200px;
+  --ira-radius:  14px;
+  --ira-max:     1320px;
 
   --ease:        cubic-bezier(.22, 1, .36, 1);
   --ease-soft:   cubic-bezier(.4, 0, .2, 1);
@@ -50,16 +50,9 @@ img { max-width: 100%; display: block; }
 a   { color: inherit; text-decoration: none; }
 
 .ira-wrap{
-  width: min(100% - 40px, var(--ira-max));
+  width: min(100% - 48px, var(--ira-max));
   margin-inline: auto;
 }
-
-/* ---------- ancrages ---------- */
-#recherche,
-#evaluation,
-#conseil-data,
-#formation,
-#data-collecte { scroll-margin-top: 100px; }
 
 /* =========================================================
    BARRE DE PROGRESSION
@@ -83,57 +76,6 @@ a   { color: inherit; text-decoration: none; }
 }
 
 /* =========================================================
-   RAIL DE NAVIGATION LATÉRAL
-   ========================================================= */
-.ira-rail{
-  position: fixed;
-  right: 24px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: none;
-  flex-direction: column;
-  gap: 16px;
-  z-index: 60;
-}
-@media (min-width: 1240px){ .ira-rail{ display: flex; } }
-
-.ira-rail a{
-  position: relative;
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  background: var(--ira-line);
-  border: 1px solid rgba(15,30,61,.10);
-  transition: background .35s var(--ease), transform .35s var(--ease), border-color .35s var(--ease);
-}
-.ira-rail a::after{
-  content: attr(data-label);
-  position: absolute;
-  right: 22px;
-  top: 50%;
-  transform: translateY(-50%) translateX(8px);
-  white-space: nowrap;
-  font-size: .68rem;
-  font-weight: 500;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--night);
-  background: var(--ira-bg-alt);
-  padding: .42rem .75rem;
-  border-radius: 4px;
-  box-shadow: 0 10px 28px -14px rgba(15,30,61,.45);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .3s var(--ease), transform .3s var(--ease);
-}
-.ira-rail a:hover::after{ opacity: 1; transform: translateY(-50%) translateX(0); }
-.ira-rail a:hover{ background: var(--green-soft); }
-.ira-rail a.is-active{
-  background: var(--green);
-  border-color: var(--green);
-  transform: scale(1.35);
-}
-
-/* =========================================================
    BOUTONS
    ========================================================= */
 .ira-btn{
@@ -141,11 +83,11 @@ a   { color: inherit; text-decoration: none; }
   display: inline-flex;
   align-items: center;
   gap: .55em;
-  padding: 1rem 1.7rem;
+  padding: 1.05rem 1.9rem;
   border-radius: var(--ira-radius);
   font-family: "Lexend", sans-serif;
   font-weight: 500;
-  font-size: .95rem;
+  font-size: 1rem;
   letter-spacing: .01em;
   border: 1.5px solid transparent;
   cursor: pointer;
@@ -158,15 +100,6 @@ a   { color: inherit; text-decoration: none; }
 .ira-btn:hover{ transform: translateY(-3px); }
 .ira-btn:hover svg{ transform: translateX(4px); }
 
-.ira-btn--primary{ background: var(--green); color: #fff; border-color: var(--green); }
-.ira-btn--primary:hover{
-  background: var(--night); border-color: var(--night);
-  box-shadow: 0 16px 32px -18px rgba(15,30,61,.7);
-}
-
-.ira-btn--ghost{ background: transparent; color: var(--night); border-color: var(--night); }
-.ira-btn--ghost:hover{ background: var(--night); color: #fff; }
-
 .ira-btn--light{ background: #fff; color: var(--green-deep); border-color: #fff; }
 .ira-btn--light:hover{
   background: transparent; color: #fff; border-color: rgba(255,255,255,.85);
@@ -174,315 +107,206 @@ a   { color: inherit; text-decoration: none; }
 }
 
 /* =========================================================
-   TITRES & TEXTE
+   SECTION EXPERTISES — GRANDES CARTES
    ========================================================= */
-.ira-title{
-  font-family: "Lexend", sans-serif;
-  font-size: clamp(1.7rem, 3.2vw, 2.45rem);
-  line-height: 1.16;
-  font-weight: 600;
-  margin: 0 0 1rem;
-  letter-spacing: -.025em;
-  color: var(--night);
+.ira-expertises{
+  padding: clamp(72px, 9vw, 128px) 0 clamp(96px, 11vw, 160px);
+  background: var(--ira-bg);
 }
 
-.ira-eyebrow{
+.ira-section-label{
   display: inline-flex;
   align-items: center;
-  gap: .7rem;
-  font-size: .76rem;
+  gap: .8rem;
+  font-size: .8rem;
   font-weight: 500;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--green);
-  margin: 0 0 1.2rem;
-}
-.ira-eyebrow::before{
-  content: "";
-  width: 30px; height: 1.5px;
-  background: var(--green);
-  display: block;
-  transform-origin: left center;
-}
-
-/* =========================================================
-   EN-TÊTE DE PAGE (HERO)
-   ========================================================= */
-.ira-pagehero{
-  position: relative;
-  background: var(--ira-bg-alt);
-  padding: clamp(64px, 9vw, 128px) 0 clamp(56px, 7vw, 96px);
-  border-bottom: 1px solid var(--ira-line);
-  overflow: hidden;
-}
-.ira-pagehero::after{
-  content: "";
-  position: absolute;
-  top: -30%; right: -12%;
-  width: 520px; height: 520px;
-  border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(44,122,62,.10), transparent 72%);
-  pointer-events: none;
-  animation: iraFloat 14s ease-in-out infinite alternate;
-}
-@keyframes iraFloat{
-  0%   { transform: translate3d(0, 0, 0) scale(1); }
-  100% { transform: translate3d(-40px, 34px, 0) scale(1.12); }
-}
-
-.ira-pagehero__inner{ max-width: 900px; position: relative; z-index: 1; }
-
-.ira-pagehero__title{
-  font-family: "Lexend", sans-serif;
-  font-size: clamp(2rem, 4.6vw, 3.4rem);
-  line-height: 1.08;
-  font-weight: 600;
-  letter-spacing: -.035em;
-  color: var(--night);
-  margin: 0 0 1.8rem;
-}
-.ira-pagehero__title .line{
-  display: block;
-  overflow: hidden;
-  padding-bottom: .1em;
-  margin-bottom: -.1em;
-}
-.ira-pagehero__title .line > span{
-  display: block;
-  transform: translateY(110%);
-  transition: transform 1.05s var(--ease);
-}
-.ira-pagehero__title em{
-  font-family: "DM Serif Display", serif;
-  font-style: italic;
-  font-weight: 400;
-  color: var(--green);
-  letter-spacing: -.02em;
-}
-
-.ira-pagehero__lead{
-  font-size: clamp(1.02rem, 1.5vw, 1.18rem);
-  font-weight: 300;
-  color: var(--ira-muted);
-  max-width: 68ch;
-  margin: 0;
-  line-height: 1.72;
-}
-.ira-pagehero__lead strong{ font-weight: 500; color: var(--green); }
-
-/* --- entrée hero (déclenchée par .is-ready sur <body>) --- */
-.ira-pagehero .ira-eyebrow,
-.ira-pagehero__lead{
-  opacity: 0;
-  transform: translateY(22px);
-  transition: opacity .9s var(--ease), transform .9s var(--ease);
-}
-body.is-ready .ira-pagehero .ira-eyebrow{
-  opacity: 1; transform: none; transition-delay: .12s;
-}
-body.is-ready .ira-pagehero__title .line > span{
-  transform: translateY(0);
-}
-body.is-ready .ira-pagehero__title .line:nth-child(1) > span{ transition-delay: .22s; }
-body.is-ready .ira-pagehero__title .line:nth-child(2) > span{ transition-delay: .34s; }
-body.is-ready .ira-pagehero__lead{
-  opacity: 1; transform: none; transition-delay: .52s;
-}
-
-/* --- indice de défilement --- */
-.ira-scrollcue{
-  margin-top: 3.2rem;
-  display: inline-flex;
-  align-items: center;
-  gap: .85rem;
-  font-size: .7rem;
   letter-spacing: .2em;
   text-transform: uppercase;
-  color: var(--ira-muted);
-  opacity: 0;
-  transition: opacity .8s var(--ease) .8s;
+  color: var(--green);
+  margin: 0 0 3rem;
 }
-body.is-ready .ira-scrollcue{ opacity: 1; }
-.ira-scrollcue__track{
-  position: relative;
-  width: 1px; height: 46px;
-  background: var(--ira-line);
-  overflow: hidden;
-}
-.ira-scrollcue__track::after{
+.ira-section-label::before{
   content: "";
-  position: absolute;
-  inset-inline: 0;
-  top: 0;
-  height: 45%;
+  width: 38px; height: 1.5px;
   background: var(--green);
-  animation: iraCue 2.1s var(--ease-soft) infinite;
-}
-@keyframes iraCue{
-  0%   { transform: translateY(-110%); }
-  55%  { transform: translateY(120%); }
-  100% { transform: translateY(120%); }
+  display: block;
 }
 
-/* =========================================================
-   BLOCS EXPERTISE
-   ========================================================= */
-.ira-expertise{
-  position: relative;
-  padding: clamp(64px, 9vw, 128px) 0;
-  border-top: 1px solid var(--ira-line);
-}
-.ira-expertise--alt{ background: var(--ira-bg-alt); }
-
-.ira-expertise__row{
+/* 2 colonnes larges max — sections plus amples */
+.ira-expertises__grid{
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(2rem, 5vw, 5rem);
-  align-items: center;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(1.8rem, 2.6vw, 2.6rem);
 }
 
-/* alternance */
-.ira-expertise--reverse .ira-expertise__media{ order: 2; }
-.ira-expertise--reverse .ira-expertise__content{ order: 1; }
-
-/* --- média --- */
-.ira-expertise__media{
+/* ---------- CARTE ---------- */
+.ira-card{
   position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--ira-bg-alt);
+  border: 1px solid var(--ira-line);
   border-radius: var(--ira-radius);
   overflow: hidden;
-  aspect-ratio: 4 / 3;
-  background: var(--ira-line);
-  box-shadow: 0 30px 70px -40px rgba(15,30,61,.42);
-  clip-path: inset(0 0 100% 0);
-  transition: clip-path 1.15s var(--ease);
+  opacity: 0;
+  transform: translateY(34px);
+  transition: opacity .9s var(--ease), transform .9s var(--ease),
+              border-color .35s var(--ease), box-shadow .55s var(--ease);
+  will-change: opacity, transform;
 }
-.ira-expertise.is-inview .ira-expertise__media{
-  clip-path: inset(0 0 0 0);
+.ira-card.is-inview{
+  opacity: 1;
+  transform: none;
 }
-.ira-expertise--reverse .ira-expertise__media{ clip-path: inset(0 0 0 100%); }
-.ira-expertise--reverse.is-inview .ira-expertise__media{ clip-path: inset(0 0 0 0); }
+.ira-card:hover{
+  border-color: rgba(44,122,62,.45);
+  box-shadow: 0 46px 100px -50px rgba(15,30,61,.55);
+}
 
-.ira-expertise__media::after{
+/* ---------- MÉDIA (plus haut) ---------- */
+.ira-card__media{
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--ira-line);
+}
+.ira-card__media img{
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transform: scale(1.08);
+  transition: transform 1.6s var(--ease), filter .55s var(--ease);
+  filter: saturate(.95);
+}
+.ira-card:hover .ira-card__media img{
+  transform: scale(1.14);
+  filter: saturate(1.05);
+}
+.ira-card__media::after{
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(15,30,61,.35), transparent 55%);
-  opacity: 0;
-  transition: opacity .55s var(--ease);
+  background: linear-gradient(to top, rgba(15,30,61,.6), transparent 55%);
+  opacity: .8;
+  transition: opacity .5s var(--ease);
   pointer-events: none;
 }
-.ira-expertise__media:hover::after{ opacity: 1; }
+.ira-card:hover .ira-card__media::after{ opacity: 1; }
 
-.ira-expertise__media img{
-  width: 100%; height: 100%;
-  object-fit: cover;
-  transform: scale(1.16);
-  transition: transform 1.7s var(--ease);
-}
-.ira-expertise.is-inview .ira-expertise__media img{ transform: scale(1.02); }
-.ira-expertise.is-inview .ira-expertise__media:hover img{ transform: scale(1.07); }
-
-/* --- contenu --- */
-.ira-expertise__content{ max-width: 560px; }
-
-.ira-expertise__marker{
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity .7s var(--ease), transform .7s var(--ease);
-}
-.ira-expertise__num{
-  font-size: .76rem;
+/* numéro en haut à droite de l’image */
+.ira-card__num{
+  position: absolute;
+  top: 1.3rem; right: 1.3rem;
+  z-index: 2;
+  font-size: .8rem;
   font-weight: 600;
   letter-spacing: .24em;
-  color: var(--green);
+  color: #fff;
+  padding: .45rem .9rem;
+  border-radius: 999px;
+  background: rgba(15,30,61,.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,.2);
   font-variant-numeric: tabular-nums;
 }
-.ira-expertise__rule{
-  flex: 1;
-  max-width: 130px;
-  height: 1px;
-  background: var(--ira-line);
-  transform-origin: left center;
-  transform: scaleX(0);
-  transition: transform .9s var(--ease) .18s;
-}
 
-.ira-expertise__desc{
-  font-size: 1rem;
-  font-weight: 300;
-  line-height: 1.75;
-  color: var(--ira-ink);
-  margin: 0 0 1.9rem;
-  opacity: 0;
-  transform: translateY(18px);
-  transition: opacity .75s var(--ease), transform .75s var(--ease);
-}
-
-.ira-expertise__list{
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.ira-expertise__list li{
+/* ---------- CORPS DE CARTE (plus d’air) ---------- */
+.ira-card__body{
   position: relative;
-  padding: .62rem 0 .62rem 1.65rem;
-  font-size: .955rem;
-  font-weight: 300;
-  line-height: 1.62;
-  color: var(--ira-muted);
-  border-bottom: 1px solid var(--ira-line);
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity .7s var(--ease), transform .7s var(--ease), color .3s var(--ease);
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+  padding: 3.2rem 2.2rem 2.2rem;
+  flex: 1;
 }
-.ira-expertise__list li:last-child{ border-bottom: 0; }
-.ira-expertise__list li:hover{ color: var(--ira-ink); }
-.ira-expertise__list li::before{
-  content: "";
+
+/* ---------- BADGE ICÔNE (chevauchement) ---------- */
+.ira-card__icon{
   position: absolute;
-  left: 0;
-  top: 1.1rem;
-  width: 8px; height: 8px;
-  border-radius: 50%;
+  top: -30px;
+  left: 2.2rem;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: var(--ira-bg-alt);
+  color: var(--green);
+  border: 1px solid var(--ira-line);
+  box-shadow: 0 22px 50px -24px rgba(15,30,61,.5);
+  transition: background .4s var(--ease), color .4s var(--ease),
+              transform .55s var(--ease), border-color .4s var(--ease);
+}
+.ira-card__icon svg{
+  width: 28px;
+  height: 28px;
+}
+.ira-card:hover .ira-card__icon{
   background: var(--green);
-  transform: scale(0);
-  transition: transform .55s var(--ease);
+  color: #fff;
+  border-color: var(--green);
+  transform: rotate(-5deg) scale(1.06);
 }
 
-/* --- états visibles (stagger) --- */
-.ira-expertise__marker,
-.ira-expertise__desc,
-.ira-title{ will-change: opacity, transform; }
-
-.ira-expertise__marker{ transition-delay: .05s; }
-.ira-expertise .ira-title{
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity .75s var(--ease) .12s, transform .75s var(--ease) .12s;
+/* ---------- TITRE + DESCRIPTION (plus grands) ---------- */
+.ira-card__title{
+  font-family: "Lexend", sans-serif;
+  font-size: clamp(1.35rem, 1.7vw, 1.65rem);
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: -.025em;
+  color: var(--night);
+  margin: 0;
 }
 
-.ira-expertise.is-inview .ira-expertise__marker{ opacity: 1; transform: none; }
-.ira-expertise.is-inview .ira-expertise__rule{ transform: scaleX(1); }
-.ira-expertise.is-inview .ira-title{ opacity: 1; transform: none; }
-.ira-expertise.is-inview .ira-expertise__desc{
-  opacity: 1; transform: none; transition-delay: .22s;
+.ira-card__desc{
+  font-size: 1.02rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--ira-muted);
+  margin: 0;
 }
-.ira-expertise.is-inview .ira-expertise__list li{
-  opacity: 1; transform: none;
+
+/* ---------- LISTE À ICÔNES (plus aérée) ---------- */
+.ira-card__list{
+  list-style: none;
+  margin: auto 0 0 0;
+  padding: 1.6rem 0 0;
+  border-top: 1px solid var(--ira-line);
+  display: flex;
+  flex-direction: column;
+  gap: .9rem;
 }
-.ira-expertise.is-inview .ira-expertise__list li::before{ transform: scale(1); }
-.ira-expertise.is-inview .ira-expertise__list li:nth-child(1){ transition-delay: .32s; }
-.ira-expertise.is-inview .ira-expertise__list li:nth-child(2){ transition-delay: .40s; }
-.ira-expertise.is-inview .ira-expertise__list li:nth-child(3){ transition-delay: .48s; }
-.ira-expertise.is-inview .ira-expertise__list li:nth-child(4){ transition-delay: .56s; }
-.ira-expertise.is-inview .ira-expertise__list li:nth-child(1)::before{ transition-delay: .34s; }
-.ira-expertise.is-inview .ira-expertise__list li:nth-child(2)::before{ transition-delay: .42s; }
-.ira-expertise.is-inview .ira-expertise__list li:nth-child(3)::before{ transition-delay: .50s; }
-.ira-expertise.is-inview .ira-expertise__list li:nth-child(4)::before{ transition-delay: .58s; }
+.ira-card__list li{
+  display: flex;
+  gap: .85rem;
+  align-items: flex-start;
+  font-size: .97rem;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--ira-muted);
+  transition: color .3s var(--ease);
+}
+.ira-card__list li:hover{ color: var(--ira-ink); }
+
+.ira-card__check{
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  margin-top: .15rem;
+  padding: 4px;
+  border-radius: 50%;
+  background: rgba(44,122,62,.12);
+  color: var(--green);
+  transition: background .3s var(--ease), color .3s var(--ease), transform .35s var(--ease);
+}
+.ira-card__list li:hover .ira-card__check{
+  background: var(--green);
+  color: #fff;
+  transform: scale(1.08);
+}
 
 /* =========================================================
    APPEL FINAL
@@ -490,7 +314,7 @@ body.is-ready .ira-scrollcue{ opacity: 1; }
 .ira-final{
   position: relative;
   overflow: hidden;
-  padding: clamp(84px, 11vw, 148px) 0;
+  padding: clamp(100px, 13vw, 180px) 0;
   text-align: center;
   color: #fff;
   background: linear-gradient(135deg, #123a1c 0%, var(--green) 52%, #1d5c2c 100%);
@@ -511,15 +335,15 @@ body.is-ready .ira-scrollcue{ opacity: 1; }
 .ira-final__inner{
   position: relative;
   z-index: 1;
-  max-width: 760px;
+  max-width: 820px;
   margin-inline: auto;
 }
 .ira-final h2{
-  font-size: clamp(1.8rem, 3.6vw, 2.7rem);
-  line-height: 1.16;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.14;
   font-weight: 600;
   letter-spacing: -.03em;
-  margin: 0 0 1.2rem;
+  margin: 0 0 1.4rem;
 }
 .ira-final h2 em{
   font-family: "DM Serif Display", serif;
@@ -528,11 +352,11 @@ body.is-ready .ira-scrollcue{ opacity: 1; }
   color: #cfe9d3;
 }
 .ira-final p{
-  font-size: 1.02rem;
+  font-size: clamp(1.05rem, 1.4vw, 1.15rem);
   font-weight: 300;
   color: rgba(255,255,255,.88);
-  margin: 0 0 2.4rem;
-  line-height: 1.7;
+  margin: 0 0 2.6rem;
+  line-height: 1.72;
 }
 
 .ira-final .ira-reveal{
@@ -549,19 +373,20 @@ body.is-ready .ira-scrollcue{ opacity: 1; }
    RESPONSIVE
    ========================================================= */
 @media (max-width: 900px){
-  .ira-expertise__row{
+  .ira-expertises__grid{
     grid-template-columns: 1fr;
-    gap: 2.2rem;
+    gap: 1.6rem;
   }
-  .ira-expertise--reverse .ira-expertise__media,
-  .ira-expertise--reverse .ira-expertise__content{
-    order: initial;
+  .ira-card__body{
+    padding: 2.8rem 1.6rem 1.8rem;
   }
-  .ira-expertise--reverse .ira-expertise__media{ clip-path: inset(0 0 100% 0); }
-  .ira-expertise--reverse.is-inview .ira-expertise__media{ clip-path: inset(0 0 0 0); }
-
-  .ira-expertise__content{ max-width: none; }
-  .ira-expertise__media{ aspect-ratio: 16 / 10; }
+  .ira-card__icon{
+    left: 1.6rem;
+    width: 56px;
+    height: 56px;
+    top: -28px;
+  }
+  .ira-card__icon svg{ width: 24px; height: 24px; }
 }
 
 /* =========================================================
@@ -573,22 +398,11 @@ body.is-ready .ira-scrollcue{ opacity: 1; }
     animation-iteration-count: 1 !important;
     transition-duration: .001ms !important;
   }
-  .ira-pagehero .ira-eyebrow,
-  .ira-pagehero__title .line > span,
-  .ira-pagehero__lead,
-  .ira-scrollcue,
-  .ira-expertise__marker,
-  .ira-expertise__rule,
-  .ira-expertise .ira-title,
-  .ira-expertise__desc,
-  .ira-expertise__list li,
-  .ira-expertise__list li::before,
-  .ira-expertise__media,
-  .ira-expertise__media img,
+  .ira-card,
+  .ira-card__media img,
   .ira-final .ira-reveal{
     opacity: 1 !important;
     transform: none !important;
-    clip-path: none !important;
   }
 }
 </style>
@@ -599,216 +413,299 @@ body.is-ready .ira-scrollcue{ opacity: 1; }
 <!-- BARRE DE PROGRESSION -->
 <div class="ira-progress" aria-hidden="true"><span id="iraProgressBar"></span></div>
 
-<!-- RAIL LATÉRAL -->
-<nav class="ira-rail" aria-label="Navigation des expertises">
-  <a href="#data-collecte" data-label="Data &amp; collecte" aria-label="Data, collecte et outils numériques"></a>
-  <a href="#recherche"    data-label="Recherche appliquée" aria-label="Recherche appliquée et analyse socio-économique"></a>
-  <a href="#evaluation"   data-label="Évaluation d'impact" aria-label="Évaluation d'impact et suivi-évaluation"></a>
-  <a href="#conseil-data" data-label="Conseil stratégique" aria-label="Conseil stratégique et institutionnel"></a>
-  <a href="#formation"    data-label="Formation" aria-label="Formation et renforcement des capacités"></a>
-</nav>
-
 <!-- HEADER (injecté) -->
 <div id="site-header"></div>
 
 <main>
 
 <!-- =========================================================
-     EN-TÊTE DE PAGE
+     EXPERTISES — GRANDES CARTES
      ========================================================= -->
-<section class="ira-pagehero">
+<section class="ira-expertises">
   <div class="ira-wrap">
-    <div class="ira-pagehero__inner">
-      <p class="ira-eyebrow">Expertises</p>
-      <h1 class="ira-pagehero__title">
-        <span class="line"><span>Cinq domaines,</span></span>
-        <span class="line"><span>une même <em>exigence de preuve.</em></span></span>
-      </h1>
-      <p class="ira-pagehero__lead">
-        De la collecte de données sur le terrain jusqu'à l'appui stratégique,
-        IRA intervient sur toute la chaîne de valeur de l'évidence — avec des méthodes
-        éprouvées et adaptées à chaque contexte.
-      </p>
-      <div class="ira-scrollcue" aria-hidden="true">
-        <span class="ira-scrollcue__track"></span>
-        <span>Explorer</span>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- =========================================================
-     01 — DATA, COLLECTE & OUTILS NUMÉRIQUES
-     ========================================================= -->
-<section class="ira-expertise" id="data-collecte" data-reveal>
-  <div class="ira-wrap">
-    <div class="ira-expertise__row">
+    <p class="ira-section-label">Expertises</p>
 
-      <div class="ira-expertise__media">
-        <img src="/images/Data-collecte-outils-numériques.jpg"
-             alt="Collecte de données et outils numériques — IRA"
-             loading="lazy" decoding="async">
-      </div>
+    <div class="ira-expertises__grid">
 
-      <div class="ira-expertise__content">
-        <div class="ira-expertise__marker">
-          <span class="ira-expertise__num">01</span>
-          <span class="ira-expertise__rule" aria-hidden="true"></span>
+      <!-- 01 — DATA, COLLECTE & OUTILS NUMÉRIQUES -->
+      <article class="ira-card" id="data-collecte" data-reveal>
+        <div class="ira-card__media">
+          <img src="/images/Data-collecte-outils-numériques.jpg"
+               alt="Collecte de données et outils numériques — IRA"
+               loading="lazy" decoding="async">
+          <span class="ira-card__num">01</span>
         </div>
-        <h2 class="ira-title">Data, collecte &amp; outils numériques</h2>
-        <p class="ira-expertise__desc">
-          Nous garantissons la fiabilité des données, de la collecte de terrain
-          jusqu'au tableau de bord de pilotage.
-        </p>
-        <ul class="ira-expertise__list">
-          <li>Conception d'outils de collecte électronique et supervision d'enquêtes de terrain</li>
-          <li>Contrôle qualité et nettoyage des données</li>
-          <li>Traitement statistique et économétrique</li>
-          <li>Tableaux de bord et solutions de visualisation de données</li>
-        </ul>
-      </div>
 
-    </div>
-  </div>
-</section>
-
-<!-- =========================================================
-     02 — RECHERCHE APPLIQUÉE & ANALYSE SOCIO-ÉCONOMIQUE
-     ========================================================= -->
-<section class="ira-expertise ira-expertise--reverse ira-expertise--alt" id="recherche" data-reveal>
-  <div class="ira-wrap">
-    <div class="ira-expertise__row">
-
-      <div class="ira-expertise__media">
-        <img src="/images/Recherche-appliquée-analyse-socio-économique.jpg"
-             alt="Recherche appliquée et analyse socio-économique — IRA"
-             loading="lazy" decoding="async">
-      </div>
-
-      <div class="ira-expertise__content">
-        <div class="ira-expertise__marker">
-          <span class="ira-expertise__num">02</span>
-          <span class="ira-expertise__rule" aria-hidden="true"></span>
+        <div class="ira-card__body">
+          <span class="ira-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <ellipse cx="12" cy="5" rx="9" ry="3"/>
+              <path d="M3 5v14a9 3 0 0 0 18 0V5"/>
+              <path d="M3 12a9 3 0 0 0 18 0"/>
+            </svg>
+          </span>
+          <h2 class="ira-card__title">Data, collecte &amp; outils numériques</h2>
+          <p class="ira-card__desc">
+            Nous garantissons la fiabilité des données, de la collecte de terrain
+            jusqu'au tableau de bord de pilotage.
+          </p>
+          <ul class="ira-card__list">
+            <li>
+              <svg class="ira-card__check" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>Conception d'outils de collecte électronique et supervision d'enquêtes</span>
+            </li>
+            <li>
+              <svg class="ira-card__check" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>Contrôle qualité et nettoyage des données</span>
+            </li>
+            <li>
+              <svg class="ira-card__check" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>Traitement statistique et économétrique</span>
+            </li>
+            <li>
+              <svg class="ira-card__check" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>Tableaux de bord et visualisation de données</span>
+            </li>
+          </ul>
         </div>
-        <h2 class="ira-title">Recherche appliquée &amp; analyse socio-économique</h2>
-        <p class="ira-expertise__desc">
-          Nous concevons et conduisons des études, enquêtes et analyses socio-économiques
-          qui éclairent la conception de politiques, de programmes ou de stratégies
-          d'intervention.
-        </p>
-        <ul class="ira-expertise__list">
-          <li>Revues de littérature et diagnostics de contexte</li>
-          <li>Enquêtes quantitatives et qualitatives sur mesure</li>
-          <li>Analyses sectorielles et études de faisabilité</li>
-          <li>Notes d'orientation et publications de capitalisation des connaissances</li>
-        </ul>
-      </div>
+      </article>
 
-    </div>
-  </div>
-</section>
-
-<!-- =========================================================
-     03 — ÉVALUATION D'IMPACT & SUIVI-ÉVALUATION
-     ========================================================= -->
-<section class="ira-expertise" id="evaluation" data-reveal>
-  <div class="ira-wrap">
-    <div class="ira-expertise__row">
-
-      <div class="ira-expertise__media">
-        <img src="/images/évaluation-d'impact-suivi-évaluation.jpg"
-             alt="Évaluation d'impact et suivi-évaluation — IRA"
-             loading="lazy" decoding="async">
-      </div>
-
-      <div class="ira-expertise__content">
-        <div class="ira-expertise__marker">
-          <span class="ira-expertise__num">03</span>
-          <span class="ira-expertise__rule" aria-hidden="true"></span>
+      <!-- 02 — RECHERCHE APPLIQUÉE & ANALYSE SOCIO-ÉCONOMIQUE -->
+      <article class="ira-card" id="recherche" data-reveal>
+        <div class="ira-card__media">
+          <img src="/images/Recherche-appliquée-analyse-socio-économique.jpg"
+               alt="Recherche appliquée et analyse socio-économique — IRA"
+               loading="lazy" decoding="async">
+          <span class="ira-card__num">02</span>
         </div>
-        <h2 class="ira-title">Évaluation d'impact &amp; suivi-évaluation</h2>
-        <p class="ira-expertise__desc">
-          Nous mesurons ce qui fonctionne réellement — et pourquoi — à l'aide d'approches
-          méthodologiques adaptées à chaque contexte : expérimentales, quasi-expérimentales
-          ou fondées sur la théorie du changement.
-        </p>
-        <ul class="ira-expertise__list">
-          <li>Évaluations d'impact de programmes et de politiques publiques</li>
-          <li>Conception de systèmes de suivi-évaluation et de cadres de résultats</li>
-          <li>Revues à mi-parcours et évaluations finales de projets</li>
-          <li>Appui à la gestion axée sur les résultats et à la redevabilité</li>
-        </ul>
-      </div>
 
-    </div>
-  </div>
-</section>
-
-<!-- =========================================================
-     04 — CONSEIL STRATÉGIQUE & INSTITUTIONNEL
-     ========================================================= -->
-<section class="ira-expertise ira-expertise--reverse ira-expertise--alt" id="conseil-data" data-reveal>
-  <div class="ira-wrap">
-    <div class="ira-expertise__row">
-
-      <div class="ira-expertise__media">
-        <img src="/images/Conseil-stratégique-institutionnel.jpg"
-             alt="Conseil stratégique et institutionnel — IRA"
-             loading="lazy" decoding="async">
-      </div>
-
-      <div class="ira-expertise__content">
-        <div class="ira-expertise__marker">
-          <span class="ira-expertise__num">04</span>
-          <span class="ira-expertise__rule" aria-hidden="true"></span>
+        <div class="ira-card__body">
+          <span class="ira-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 7v14"/>
+              <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>
+            </svg>
+          </span>
+          <h2 class="ira-card__title">Recherche appliquée &amp; analyse socio-économique</h2>
+          <p class="ira-card__desc">
+            Nous concevons des études et analyses qui éclairent la conception de
+            politiques, de programmes ou de stratégies d'intervention.
+          </p>
+          <ul class="ira-card__list">
+            <li>
+              <svg class="ira-card__check" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>Revues de littérature et diagnostics de contexte</span>
+            </li>
+            <li>
+              <svg class="ira-card__check" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>Enquêtes quantitatives et qualitatives sur mesure</span>
+            </li>
+            <li>
+              <svg class="ira-card__check" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>Analyses sectorielles et études de faisabilité</span>
+            </li>
+            <li>
+              <svg class="ira-card__check" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>Notes d'orientation et publications de capitalisation</span>
+            </li>
+          </ul>
         </div>
-        <h2 class="ira-title">Conseil stratégique &amp; institutionnel</h2>
-        <p class="ira-expertise__desc">
-          Nous transformons les constats issus de la recherche en choix stratégiques
-          concrets, au service de la performance de nos partenaires.
-        </p>
-        <ul class="ira-expertise__list">
-          <li>Diagnostics organisationnels et institutionnels</li>
-          <li>Élaboration de stratégies et de plans d'action</li>
-          <li>Facilitation d'ateliers stratégiques et de restitution</li>
-          <li>Appui-conseil à la conception de programmes</li>
-        </ul>
-      </div>
+      </article>
 
-    </div>
-  </div>
-</section>
-
-<!-- =========================================================
-     05 — FORMATION & RENFORCEMENT DES CAPACITÉS
-     ========================================================= -->
-<section class="ira-expertise" id="formation" data-reveal>
-  <div class="ira-wrap">
-    <div class="ira-expertise__row">
-
-      <div class="ira-expertise__media">
-        <img src="/images/Formation-renforcement-des-capacités.jpg"
-             alt="Formation et renforcement des capacités — IRA"
-             loading="lazy" decoding="async">
-      </div>
-
-      <div class="ira-expertise__content">
-        <div class="ira-expertise__marker">
-          <span class="ira-expertise__num">05</span>
-          <span class="ira-expertise__rule" aria-hidden="true"></span>
+      <!-- 03 — ÉVALUATION D'IMPACT & SUIVI-ÉVALUATION -->
+      <article class="ira-card" id="evaluation" data-reveal>
+        <div class="ira-card__media">
+          <img src="/images/évaluation-d'impact-suivi-évaluation.jpg"
+               alt="Évaluation d'impact et suivi-évaluation — IRA"
+               loading="lazy" decoding="async">
+          <span class="ira-card__num">03</span>
         </div>
-        <h2 class="ira-title">Formation &amp; renforcement des capacités</h2>
-        <p class="ira-expertise__desc">
-          Nous transférons nos méthodes aux équipes de nos partenaires, pour renforcer
-          durablement leur autonomie.
-        </p>
-        <ul class="ira-expertise__list">
-          <li>Conception et animation de modules de formation sur mesure</li>
-          <li>Ateliers pratiques sur les méthodes d'évaluation et l'analyse de données</li>
-          <li>Accompagnement technique des équipes internes (mentorat, appui-conseil)</li>
-          <li>Production de guides méthodologiques et de supports pédagogiques</li>
-        </ul>
-      </div>
+
+        <div class="ira-card__body">
+          <span class="ira-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <circle cx="12" cy="12" r="6"/>
+              <circle cx="12" cy="12" r="2"/>
+            </svg>
+          </span>
+          <h2 class="ira-card__title">Évaluation d'impact &amp; suivi-évaluation</h2>
+          <p class="ira-card__desc">
+            Nous mesurons ce qui fonctionne réellement — et pourquoi — à l'aide
+            d'approches expérimentales, quasi-expérimentales ou fondées sur la
+            théorie du changement.
+          </p>
+          <ul class="ira-card__list">
+            <li>
+              <svg class="ira-card__check" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>Évaluations d'impact de programmes et de politiques publiques</span>
+            </li>
+            <li>
+              <svg class="ira-card__check" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>Conception de systèmes de suivi-évaluation et cadres de résultats</span>
+            </li>
+            <li>
+              <svg class="ira-card__check" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>Revues à mi-parcours et évaluations finales</span>
+            </li>
+            <li>
+              <svg class="ira-card__check" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>Appui à la gestion axée sur les résultats et à la redevabilité</span>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 04 — CONSEIL STRATÉGIQUE & INSTITUTIONNEL -->
+      <article class="ira-card" id="conseil-data" data-reveal>
+        <div class="ira-card__media">
+          <img src="/images/Conseil-stratégique-institutionnel.jpg"
+               alt="Conseil stratégique et institutionnel — IRA"
+               loading="lazy" decoding="async">
+          <span class="ira-card__num">04</span>
+        </div>
+
+        <div class="ira-card__body">
+          <span class="ira-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+            </svg>
+          </span>
+          <h2 class="ira-card__title">Conseil stratégique &amp; institutionnel</h2>
+          <p class="ira-card__desc">
+            Nous transformons les constats issus de la recherche en choix
+            stratégiques concrets, au service de la performance de nos partenaires.
+          </p>
+          <ul class="ira-card__list">
+            <li>
+              <svg class="ira-card__check" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>Diagnostics organisationnels et institutionnels</span>
+            </li>
+            <li>
+              <svg class="ira-card__check" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>Élaboration de stratégies et de plans d'action</span>
+            </li>
+            <li>
+              <svg class="ira-card__check" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>Facilitation d'ateliers stratégiques et de restitution</span>
+            </li>
+            <li>
+              <svg class="ira-card__check" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>Appui-conseil à la conception de programmes</span>
+            </li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- 05 — FORMATION & RENFORCEMENT DES CAPACITÉS -->
+      <article class="ira-card" id="formation" data-reveal>
+        <div class="ira-card__media">
+          <img src="/images/Formation-renforcement-des-capacités.jpg"
+               alt="Formation et renforcement des capacités — IRA"
+               loading="lazy" decoding="async">
+          <span class="ira-card__num">05</span>
+        </div>
+
+        <div class="ira-card__body">
+          <span class="ira-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/>
+              <path d="M22 10v6"/>
+              <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/>
+            </svg>
+          </span>
+          <h2 class="ira-card__title">Formation &amp; renforcement des capacités</h2>
+          <p class="ira-card__desc">
+            Nous transférons nos méthodes aux équipes de nos partenaires, pour
+            renforcer durablement leur autonomie.
+          </p>
+          <ul class="ira-card__list">
+            <li>
+              <svg class="ira-card__check" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>Conception et animation de modules de formation sur mesure</span>
+            </li>
+            <li>
+              <svg class="ira-card__check" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>Ateliers pratiques sur l'évaluation et l'analyse de données</span>
+            </li>
+            <li>
+              <svg class="ira-card__check" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>Accompagnement technique des équipes internes (mentorat)</span>
+            </li>
+            <li>
+              <svg class="ira-card__check" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span>Guides méthodologiques et supports pédagogiques</span>
+            </li>
+          </ul>
+        </div>
+      </article>
 
     </div>
   </div>
@@ -846,16 +743,7 @@ body.is-ready .ira-scrollcue{ opacity: 1; }
 
 <script>
 /* =========================================================
-   1. ENTRÉE DU HERO
-   ========================================================= */
-document.addEventListener("DOMContentLoaded", function () {
-  requestAnimationFrame(function () {
-    document.body.classList.add("is-ready");
-  });
-});
-
-/* =========================================================
-   2. RÉVÉLATION AU DÉFILEMENT
+   1. RÉVÉLATION AU DÉFILEMENT (cartes + CTA)
    ========================================================= */
 (function () {
   var targets = document.querySelectorAll("[data-reveal], [data-reveal-final]");
@@ -876,7 +764,7 @@ document.addEventListener("DOMContentLoaded", function () {
 })();
 
 /* =========================================================
-   3. BARRE DE PROGRESSION
+   2. BARRE DE PROGRESSION
    ========================================================= */
 (function () {
   var bar = document.getElementById("iraProgressBar");
@@ -900,28 +788,7 @@ document.addEventListener("DOMContentLoaded", function () {
 })();
 
 /* =========================================================
-   4. RAIL — SECTION ACTIVE
-   ========================================================= */
-(function () {
-  var links = document.querySelectorAll(".ira-rail a");
-  var sections = document.querySelectorAll(".ira-expertise");
-  if (!links.length || !sections.length || !("IntersectionObserver" in window)) return;
-
-  var spy = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (!entry.isIntersecting) return;
-      var id = "#" + entry.target.id;
-      links.forEach(function (l) {
-        l.classList.toggle("is-active", l.getAttribute("href") === id);
-      });
-    });
-  }, { rootMargin: "-45% 0px -45% 0px", threshold: 0 });
-
-  sections.forEach(function (s) { spy.observe(s); });
-})();
-
-/* =========================================================
-   5. INJECTION HEADER / FOOTER
+   3. INJECTION HEADER / FOOTER
    ========================================================= */
 document.addEventListener("DOMContentLoaded", function () {
   fetch("/components/header.html")
